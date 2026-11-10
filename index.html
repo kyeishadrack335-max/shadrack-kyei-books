@@ -3,89 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Discover books by author Shadrack Kyei.">
-<title>Shadrack Kyei | Books & Publications</title>
+<title>SK Publications | Shadrack Kyei</title>
+<meta name="description" content="Discover books and publications by Shadrack Kyei at SK Publications.">
+
 <style>
-:root{--ink:#171717;--paper:#f7f6f2;--muted:#777;--gold:#b99557;--line:#e5e1d8}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
-header{padding:22px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#fff}
-.brand{font-weight:700;letter-spacing:2px;font-size:14px}nav a{color:var(--ink);text-decoration:none;margin-left:22px;font-size:13px}
-.hero{padding:90px 7% 78px;background:#1d1d1d;color:#fff}
-.eyebrow{color:#d7bd91;letter-spacing:3px;font-size:11px;font-weight:bold}
-h1{font-family:Georgia,serif;font-size:clamp(42px,7vw,76px);line-height:1.04;max-width:760px;font-weight:400;margin:20px 0}
-.hero p{max-width:540px;color:#d2d2d2;font-size:17px}
-.btn{display:inline-block;background:var(--gold);color:#151515;text-decoration:none;padding:13px 22px;margin-top:18px;font-size:12px;font-weight:bold;letter-spacing:1px}
-section{padding:68px 7%}.section-label{font-size:11px;color:var(--gold);letter-spacing:3px;font-weight:bold}
-h2{font:400 clamp(30px,4vw,43px) Georgia,serif;margin:10px 0 28px}
-.book{display:grid;grid-template-columns:minmax(150px,260px) 1fr;gap:40px;align-items:center;max-width:850px}
-.cover{aspect-ratio:2/3;background:#171717;color:white;display:flex;flex-direction:column;justify-content:space-between;padding:24px;box-shadow:12px 14px 28px #0002}
-.cover small{letter-spacing:3px;color:#d7bd91;font-size:9px}.cover strong{font:400 27px/1.15 Georgia,serif}.cover span{font-size:10px;letter-spacing:2px}
-.book-copy p,.about p{color:#5f5f5f;max-width:600px}.note{font-size:12px;color:var(--muted);margin-top:14px}
-.about{background:#fff}.contact{background:#efede7}.contact a{color:#6e5129}
-footer{padding:25px 7%;background:#171717;color:#aaa;font-size:12px}
-@media(max-width:650px){header{display:block}nav{margin-top:12px}nav a{margin:0 14px 0 0}.hero{padding:65px 7%}.book{grid-template-columns:1fr;max-width:330px}.cover{max-width:230px}}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,serif;color:#202d3d;background:#faf9f6;line-height:1.7}
+header{background:#14283e;padding:20px 7%;position:sticky;top:0;z-index:10}
+nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{color:#d7b779;font-size:23px;font-weight:bold;letter-spacing:2px}
+nav a{color:white;text-decoration:none;font-family:Arial,sans-serif;font-size:12px;margin:0 9px}
+nav a:hover{color:#d7b779}
+.hero{background:#eae6dc;padding:110px 7%;text-align:center}
+.eyebrow{color:#a17d45;font:12px Arial,sans-serif;letter-spacing:4px;margin-bottom:20px}
+.hero h1{font-size:clamp(40px,7vw,75px);line-height:1.12;max-width:850px;margin:auto;color:#172a40}
+.hero p{max-width:620px;margin:25px auto;color:#626262}
+.btn{display:inline-block;background:#172a40;color:white;padding:14px 25px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1px;margin:8px 5px;border-radius:3px}
+.btn:hover{background:#a17d45}
+.btn.gold{background:#b18b50}
+section{padding:85px 7%}
+.container{max-width:1150px;margin:auto}
+.section-label{font:12px Arial,sans-serif;letter-spacing:3px;color:#a17d45;margin-bottom:12px}
+h2{font-size:clamp(29px,4vw,42px);line-height:1.25;margin-bottom:20px}
+.featured{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}
+.book-image{text-align:center}
+.book-image img{width:100%;max-width:390px;height:auto;border-radius:5px;box-shadow:0 20px 45px #0002}
+.book-info p{color:#626262;margin:17px 0}
+.price{font-size:25px;color:#a17d45!important;font-weight:bold}
+.about{background:#172a40;color:white}
+.about p{max-width:800px;color:#e0e4e9;margin:15px 0}
+.reviews{background:#eae6dc;text-align:center}
+.review-card{background:white;padding:35px;max-width:650px;margin:30px auto;border-radius:8px}
+.review-card p{color:#666;margin:15px 0}
+.updates{text-align:center}
+.updates p{max-width:600px;margin:15px auto;color:#666}
+.contact{background:#f0eee8;text-align:center}
+.contact p{color:#626262;margin:15px auto;max-width:600px}
+footer{background:#14283e;color:#ddd;text-align:center;padding:30px 15px;font:13px Arial,sans-serif}
+@media(max-width:750px){
+nav{justify-content:center}
+nav div:last-child{text-align:center}
+nav a{display:inline-block;margin:6px}
+.featured{grid-template-columns:1fr;text-align:center;gap:35px}
+section{padding:65px 6%}
+.hero{padding:85px 6%}
+}
 </style>
 </head>
-<body>
-<header>
-  <div class="brand">SHADRACK KYEI</div>
-  <nav><a href="#home">Home</a><a href="#books">Books</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
-</header>
-<main>
-  <section class="hero" id="home">
-    <div class="eyebrow">BOOKS &amp; PUBLICATIONS</div>
-    <h1>Words for the journey of becoming.</h1>
-    <p>Explore thoughtful writing on growth, change, identity and the life we are learning to live.</p>
-    <a class="btn" href="#books">EXPLORE THE BOOKS</a>
-  </section>
-  <section id="books">
-    <div class="section-label">THE AUTHOR'S LIBRARY</div>
-    <h2>Featured publication</h2>
-    <div class="book">
-      <div class="cover" role="img" aria-label="Placeholder cover design for When Becoming Feels Impossible">
-        <small>A BOOK BY</small>
-        <strong>WHEN<br> BECOMING<br> FEELS<br> IMPOSSIBLE</strong>
-        <span>SHADRACK KYEI</span>
-      </div>
-      <div class="book-copy">
-        <div class="section-label">FEATURED BOOK</div>
-        <h2>When Becoming Feels Impossible</h2>
-        <p style="color:#c9a875;font-size:20px;font-weight:bold;margin:12px 0;">Price: GH₵30</p>
-        <p>A thoughtful exploration of growth, transformation, and the challenge of becoming. This book invites readers to approach change with patience and to appreciate the life they are already living.</p>
-        <a class="btn" href="book.html">READ MORE ABOUT THE BOOK</a>
-        <a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE."
-      </div>
-    </div>
-  </section>
-  <section id="reviews" style="background:#f4f0e8; padding:70px 20px; text-align:center;">
-  <p style="color:#b08b52; letter-spacing:3px;">READER VOICES</p>
-  <h2 style="color:#172b46;">What Readers Are Saying</h2>
-  <p style="color:#555; max-width:550px; margin:15px auto 35px;">
-    Every book creates a different experience. Share your thoughts about
-    When Becoming Feels Impossible.
-  </p>
 
-  <div style="background:white; max-width:550px; margin:20px auto; padding:30px; border-radius:12px;">
-    <h3 style="color:#172b46;">Your thoughts matter.</h3>
-    <p style="color:#666;">Reader reviews will appear here as readers share their experiences.</p>
-  </div>
-  </section>
-    <div class="section-label">MEET THE AUTHOR</div>
-    <h2>Shadrack Kyei</h2>
-    <p>Shadrack Kyei is an emerging author whose writing explores personal growth, transformation, self-discovery, and the experiences that shape human life.</p>
+<body>
+
+<header>
+<nav>
+<div class="logo">SK PUBLICATIONS</div>
+<div>
+<a href="#home">HOME</a>
+<a href="#books">BOOKS</a>
+<a href="#about">AUTHOR</a>
+<a href="#reviews">REVIEWS</a>
+<a href="#contact">CONTACT</a>
+</div>
+</nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+<div class="eyebrow">WELCOME TO SK PUBLICATIONS</div>
+<h1>Stories, ideas and words that stay with you.</h1>
+<p>Discover thoughtful books exploring growth, transformation, identity and the journey of becoming.</p>
+<a class="btn" href="#books">EXPLORE OUR BOOKS</a>
+</section>
+
+<section id="books">
+<div class="container">
+<div class="section-label">THE AUTHOR'S COLLECTION</div>
+<h2>Featured Publication</h2>
+
+<div class="featured">
+<div class="book-image">
+<img src="file_00000000454c81f499ffcea37a814fea.png"
+alt="WHEN BECOMING FEELS IMPOSSIBLE by Shadrack Kyei">
+</div>
+
+<div class="book-info">
+<div class="section-label">A BOOK BY SHADRACK KYEI</div>
+<h2>WHEN BECOMING FEELS IMPOSSIBLE</h2>
+<p class="price">GH₵30</p>
+<p>A thoughtful exploration of growth, transformation, and the challenge of becoming. This book invites readers to approach change with patience and appreciate the life they are already living.</p>
+
+<a class="btn" href="book.html">DISCOVER THE BOOK</a>
+
+<a class="btn gold"
+href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE.">
+ORDER / ENQUIRE
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="about" id="about">
+<div class="container">
+<div class="section-label">MEET THE AUTHOR</div>
+<h2>Shadrack Kyei</h2>
+
+<p>Shadrack Kyei is an emerging author whose writing explores personal growth, transformation, self-discovery, and the experiences that shape human life.</p>
 
 <p>Through thoughtful reflections and meaningful storytelling, he hopes to encourage readers to approach life with patience, embrace their journey, and appreciate who they are becoming.</p>
 
 <p>His book, <em>When Becoming Feels Impossible</em>, reflects his belief that growth is not always about becoming someone different, but also about learning to value the life one is already living.</p>
-  
-  </section>
-  <section class="contact" id="contact">
-    <div class="section-label">GET IN TOUCH</div>
-    <h2>Let's connect.</h2>
-    <p>For book enquiries, reader feedback or collaboration, contact the author.</p>
-    <p class="note">Contact details and secure purchase links will be added after you choose which details to publish.</p>
-  </section>
+</div>
+</section>
+
+<section class="reviews" id="reviews">
+<div class="container">
+<div class="section-label">READER VOICES</div>
+<h2>Every Reader Has a Story</h2>
+<p>Books can leave different impressions on different people. We welcome genuine thoughts and experiences from our readers.</p>
+
+<div class="review-card">
+<h3>Have You Read Our Book?</h3>
+<p>We would love to hear what you thought about <em>When Becoming Feels Impossible</em>.</p>
+<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20to%20share%20my%20book%20review.">SHARE YOUR REVIEW</a>
+</div>
+</div>
+</section>
+
+<section class="updates">
+<div class="container">
+<div class="section-label">FROM SK PUBLICATIONS</div>
+<h2>More Stories Are Ahead</h2>
+<p>Stay connected as new writing projects and publications become available.</p>
+<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20updates%20about%20SK%20Publications.">GET IN TOUCH</a>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<div class="container">
+<div class="section-label">GET IN TOUCH</div>
+<h2>Let's Connect.</h2>
+<p>For book enquiries, reader feedback and publication updates, contact SK Publications.</p>
+<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20am%20contacting%20SK%20Publications.">CONTACT SK PUBLICATIONS</a>
+</div>
+</section>
+
 </main>
-<footer>© 2026 Shadrack Kyei · Books &amp; Publications</footer>
+
+<footer>
+<p>© 2026 SK Publications · Founded by Shadrack Kyei</p>
+<p>Words for the journey of becoming.</p>
+</footer>
+
 </body>
 </html>
