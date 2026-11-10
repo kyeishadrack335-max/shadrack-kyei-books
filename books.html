@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Books | SK Publications</title>
+<title>Bookstore | SK Publications</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -16,19 +16,20 @@ header a{color:white;text-decoration:none;font:12px Arial,sans-serif}
 .label{color:#a17d45;letter-spacing:3px;font:12px Arial,sans-serif;margin-bottom:15px}
 h1{font-size:clamp(38px,6vw,60px);line-height:1.2}
 .hero p{max-width:600px;margin:20px auto;color:#666}
-main{max-width:1150px;margin:auto;padding:75px 25px}
-h2{font-size:35px;margin-bottom:12px}
-.intro{color:#666;margin-bottom:40px}
+main{max-width:1150px;margin:auto;padding:65px 25px}
+h2{font-size:32px;margin-bottom:12px}
+.intro{color:#666;margin-bottom:35px}
+.section{margin-bottom:75px}
 .books{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:35px}
 .card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 8px 30px #0000000c;padding-bottom:25px}
 .card img{width:100%;max-height:370px;object-fit:contain;background:#f0eee8;padding:20px}
 .card-content{padding:22px}
-.card h3{font-size:22px;line-height:1.35}
+.card h3{font-size:21px;line-height:1.35}
 .card p{color:#666;margin:12px 0}
 .price{color:#a17d45;font-size:22px;font-weight:bold}
 .btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 20px;font:12px Arial,sans-serif;letter-spacing:1px;margin-top:12px;border-radius:3px}
 .btn:hover{background:#a17d45}
-.future{margin-top:65px;text-align:center;background:#eae6dc;padding:45px 20px;border-radius:8px}
+.future{margin-top:30px;text-align:center;background:#eae6dc;padding:45px 20px;border-radius:8px}
 footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px Arial,sans-serif}
 </style>
 </head>
@@ -47,9 +48,11 @@ footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px A
 </section>
 
 <main>
+
+<section class="section">
 <div class="label">OUR COLLECTION</div>
-<h2>Published Books</h2>
-<p class="intro">Explore the books currently available from Shadrack Kyei.</p>
+<h2>Featured Books</h2>
+<p class="intro">Explore selected publications from Shadrack Kyei.</p>
 
 <div class="books">
 
@@ -63,21 +66,26 @@ alt="When Becoming Feels Impossible book cover">
 <p>By Shadrack Kyei</p>
 <p>A thoughtful exploration of growth, transformation and the challenge of becoming.</p>
 <div class="price">GH₵30</div>
-
 <a class="btn" href="book.html">VIEW BOOK DETAILS</a>
-
 <a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE.">ORDER BOOK</a>
 </div>
 </div>
 
 </div>
+</section>
 
-<div class="future">
-<div class="label">MORE PUBLICATIONS AHEAD</div>
+<section class="section">
+<div class="label">FRESH FROM THE AUTHOR</div>
+<h2>New Releases</h2>
+<p class="intro">New publications will appear here when they are officially released.</p>
+</section>
+
+<section class="future">
+<div class="label">COMING SOON</div>
 <h2>More Books Are Coming.</h2>
 <p>Stay connected with SK Publications as new books and writing projects are released.</p>
 <a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20updates%20about%20new%20SK%20Publications%20books.">GET UPDATES</a>
-</div>
+</section>
 
 </main>
 
