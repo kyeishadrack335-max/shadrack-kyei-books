@@ -15,22 +15,30 @@ header p{font-size:13px;margin-top:8px;color:#ddd}
 main{max-width:1100px;margin:auto;padding:35px 20px}
 .welcome{background:#eae6dc;padding:30px;border-radius:10px;margin-bottom:30px}
 .welcome h1{font-family:Georgia,serif;font-size:30px;margin-bottom:10px}
-.welcome p{color:#666;line-height:1.7}
+.welcome p,.panel p{color:#666;line-height:1.7}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:35px}
-.stat{background:white;padding:25px;border-radius:9px;box-shadow:0 5px 20px #00000008}
+.stat,.panel{background:white;padding:25px;border-radius:9px;box-shadow:0 5px 20px #00000008}
 .stat p{color:#777;font-size:13px}
 .stat h2{font-size:30px;color:#a17d45;margin-top:10px}
-.panel{background:white;padding:25px;border-radius:10px;margin-bottom:25px}
+.panel{margin-bottom:25px}
 .panel h2{font-family:Georgia,serif;margin-bottom:15px}
-.panel p{color:#666;line-height:1.7}
-.book{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:20px}
-.book img{width:100px;border-radius:5px}
+.book{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:20px;padding:15px 0;border-bottom:1px solid #eee}
+.book img{width:85px;border-radius:5px}
 .book-info{flex:1;min-width:180px}
 .book-info h3{font-family:Georgia,serif;font-size:18px}
 .price{color:#a17d45;font-weight:bold;margin-top:8px}
 .status{display:inline-block;background:#e5f1e7;color:#27643a;padding:6px 12px;border-radius:20px;font-size:12px;margin-top:10px}
-.btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 18px;border-radius:4px;font-size:12px;margin-top:15px}
+.upcoming{background:#fff1d9;color:#8b6424}
+.btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 18px;border:0;border-radius:4px;font-size:12px;margin-top:15px;cursor:pointer}
 .btn:hover{background:#a17d45}
+form{display:grid;gap:14px;margin-top:20px}
+label{font-size:13px;font-weight:bold}
+input,textarea,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:5px;font:14px Arial;background:white;color:#172a40}
+textarea{min-height:90px;resize:vertical}
+.field{display:grid;gap:7px}
+.book-actions button{margin-right:7px}
+.empty{color:#777;margin-top:20px}
+.notice{font-size:12px;color:#8b6424;background:#fff5df;padding:13px;border-radius:5px;margin-top:15px}
 footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:12px}
 </style>
 </head>
@@ -46,58 +54,78 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 
 <section class="welcome">
 <h1>Welcome, Shadrack Kyei.</h1>
-<p>This is your publishing workspace. Keep track of your books, upcoming releases and publishing progress.</p>
+<p>Your publishing workspace. Organise your books, prices and upcoming releases.</p>
 </section>
 
 <section class="stats">
-
 <div class="stat">
 <p>Published Books</p>
-<h2>1</h2>
+<h2 id="publishedCount">1</h2>
 </div>
-
 <div class="stat">
 <p>Upcoming Books</p>
-<h2>0</h2>
+<h2 id="upcomingCount">0</h2>
 </div>
-
 <div class="stat">
-<p>Publishing Brand</p>
-<h2>SK</h2>
+<p>Total Books</p>
+<h2 id="totalCount">1</h2>
 </div>
-
 </section>
 
 <section class="panel">
-<h2>Your Published Books</h2>
-<p>Books currently listed in your bookstore.</p>
-
-<div class="book">
-<img src="file_00000000454c81f499ffcea37a814fea.png" alt="Book cover">
-
-<div class="book-info">
-<h3>WHEN BECOMING FEELS IMPOSSIBLE</h3>
-<p>Author: Shadrack Kyei</p>
-<p class="price">GH₵30</p>
-<span class="status">Published</span>
-</div>
-</div>
-
-<a class="btn" href="books.html">VIEW BOOKSTORE</a>
-<a class="btn" href="book.html">VIEW BOOK PAGE</a>
+<h2>Your Book Inventory</h2>
+<p>Keep track of your published and upcoming books.</p>
+<div id="bookList"></div>
 </section>
 
 <section class="panel">
-<h2>Publishing Progress</h2>
-<p>Keep your next writing projects organised. Update this section as you begin and complete new books.</p>
+<h2>Add a New Book</h2>
+<p>Enter the details of a new publication below.</p>
 
-<p style="margin-top:15px"><strong>Next step:</strong> Prepare your next manuscript for publication.</p>
+<form id="bookForm">
+
+<div class="field">
+<label for="title">Book Title</label>
+<input id="title" type="text" placeholder="Enter book title" required>
+</div>
+
+<div class="field">
+<label for="description">Book Description</label>
+<textarea id="description" placeholder="Write a short description" required></textarea>
+</div>
+
+<div class="field">
+<label for="price">Book Price (GH₵)</label>
+<input id="price" type="number" min="0" step="0.01" placeholder="Example: 30" required>
+</div>
+
+<div class="field">
+<label for="date">Publication Date</label>
+<input id="date" type="date">
+</div>
+
+<div class="field">
+<label for="status">Publication Status</label>
+<select id="status">
+<option value="Upcoming">Upcoming</option>
+<option value="Published">Published</option>
+</select>
+</div>
+
+<button class="btn" type="submit">ADD BOOK TO INVENTORY</button>
+
+</form>
+
+<p class="notice">
+Your entries are saved only in this browser on this device. This dashboard is not password-protected and is not a private website.
+</p>
 </section>
 
 <section class="panel">
 <h2>Quick Links</h2>
 <a class="btn" href="index.html">HOMEPAGE</a>
 <a class="btn" href="books.html">BOOKSTORE</a>
+<a class="btn" href="book.html">CURRENT BOOK PAGE</a>
 </section>
 
 </main>
@@ -106,5 +134,146 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 © 2026 SK Publications · Shadrack Kyei
 </footer>
 
+<script>
+const storageKey = "skPublicationsInventory";
+
+const originalBook = {
+id: "first-book",
+title: "WHEN BECOMING FEELS IMPOSSIBLE",
+description: "A thoughtful exploration of growth, transformation and the challenge of becoming.",
+price: 30,
+date: "",
+status: "Published",
+original: true
+};
+
+let books;
+
+try {
+  const saved = localStorage.getItem(storageKey);
+  books = saved ? JSON.parse(saved) : [originalBook];
+  if (!Array.isArray(books)) books = [originalBook];
+} catch (error) {
+  books = [originalBook];
+}
+
+function saveBooks() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(books));
+    return true;
+  } catch (error) {
+    alert("Could not save your inventory in this browser.");
+    return false;
+  }
+}
+
+function renderBooks() {
+  const list = document.getElementById("bookList");
+  list.innerHTML = "";
+
+  let published = 0;
+  let upcoming = 0;
+
+  books.forEach(book => {
+    if (book.status === "Published") published++;
+    else upcoming++;
+
+    const item = document.createElement("div");
+    item.className = "book";
+
+    const info = document.createElement("div");
+    info.className = "book-info";
+
+    const title = document.createElement("h3");
+    title.textContent = book.title;
+
+    const description = document.createElement("p");
+    description.textContent = book.description;
+
+    const price = document.createElement("p");
+    price.className = "price";
+    price.textContent = "GH₵" + Number(book.price).toFixed(2);
+
+    const status = document.createElement("span");
+    status.className = "status " +
+      (book.status === "Upcoming" ? "upcoming" : "");
+    status.textContent = book.status;
+
+    info.append(title, description, price, status);
+
+    if (book.date) {
+      const date = document.createElement("p");
+      date.textContent = "Publication date: " + book.date;
+      info.appendChild(date);
+    }
+
+    item.appendChild(info);
+
+    if (!book.original) {
+      const actions = document.createElement("div");
+      actions.className = "book-actions";
+
+      const remove = document.createElement("button");
+      remove.className = "btn";
+      remove.textContent = "REMOVE";
+      remove.type = "button";
+
+      remove.addEventListener("click", () => {
+        if (confirm("Remove this book from this browser's inventory?")) {
+          books = books.filter(entry => entry.id !== book.id);
+          if (saveBooks()) renderBooks();
+        }
+      });
+
+      actions.appendChild(remove);
+      item.appendChild(actions);
+    }
+
+    list.appendChild(item);
+  });
+
+  if (books.length === 0) {
+    list.innerHTML = '<p class="empty">No books in your inventory yet.</p>';
+  }
+
+  document.getElementById("publishedCount").textContent = published;
+  document.getElementById("upcomingCount").textContent = upcoming;
+  document.getElementById("totalCount").textContent = books.length;
+}
+
+document.getElementById("bookForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const newBook = {
+    id: "book-" + Date.now(),
+    title: document.getElementById("title").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    price: Number(document.getElementById("price").value),
+    date: document.getElementById("date").value,
+    status: document.getElementById("status").value,
+    original: false
+  };
+
+  if (!newBook.title || !newBook.description ||
+      !Number.isFinite(newBook.price) || newBook.price < 0) {
+    alert("Please enter valid book details.");
+    return;
+  }
+
+  books.push(newBook);
+
+  if (saveBooks()) {
+    renderBooks();
+    event.target.reset();
+    alert("Book added to your local inventory.");
+  } else {
+    books.pop();
+  }
+});
+
+renderBooks();
+</script>
+
 </body>
 </html>
+
