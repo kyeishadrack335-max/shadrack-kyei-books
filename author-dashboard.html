@@ -135,46 +135,65 @@ Your entries are saved only in this browser on this device. This dashboard is no
 </footer>
 
 <script>
-const storageKey = "skPublicationsInventory";
 
-const originalBook = {
-id: "first-book",
-title: "WHEN BECOMING FEELS IMPOSSIBLE",
-description: "A thoughtful exploration of growth, transformation and the challenge of becoming.",
-price: 30,
-date: "",
-status: "Published",
-original: true
-};
+const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
+const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
 
-let books;
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-try {
-  const saved = localStorage.getItem(storageKey);
-  books = saved ? JSON.parse(saved) : [originalBook];
-  if (!Array.isArray(books)) books = [originalBook];
-} catch (error) {
-  books = [originalBook];
+const panels = document.querySelectorAll(".panel");
+const stats = document.querySelector(".stats");
+panels[0].style.display = "none";
+panels[1].style.display = "none";
+stats.style.display = "none";
+
+const login = document.createElement("section");
+login.className = "panel";
+login.style.cssText = "max-width:500px;margin:30px auto;";
+login.innerHTML = `
+  <h2>Author Login</h2>
+  <p>Sign in to manage your publications.</p>
+  <form id="loginForm">
+    <div class="field">
+      <label>Email address</label>
+      <input id="loginEmail" type="email" required>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="loginPassword" type="password" required>
+    </div>
+    <button class="btn" type="submit">SIGN IN</button>
+    <p id="loginMessage"></p>
+  </form>
+`;
+document.querySelector(".welcome").after(login);
+
+function showDashboard(show) {
+  login.style.display = show ? "none" : "block";
+  stats.style.display = show ? "grid" : "none";
+  panels[0].style.display = show ? "block" : "none";
+  panels[1].style.display = show ? "block" : "none";
 }
 
-function saveBooks() {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(books));
-    return true;
-  } catch (error) {
-    alert("Could not save your inventory in this browser.");
-    return false;
-  }
-}
-
-function renderBooks() {
+async function loadBooks() {
   const list = document.getElementById("bookList");
-  list.innerHTML = "";
+  list.textContent = "Loading books...";
 
+  const { data, error } = await client
+    .from("books")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    list.textContent = "Could not load books. Please try again.";
+    return;
+  }
+
+  list.innerHTML = "";
   let published = 0;
   let upcoming = 0;
 
-  books.forEach(book => {
+  data.forEach(book => {
     if (book.status === "Published") published++;
     else upcoming++;
 
@@ -195,63 +214,77 @@ function renderBooks() {
     price.textContent = "GH₵" + Number(book.price).toFixed(2);
 
     const status = document.createElement("span");
-    status.className = "status " +
-      (book.status === "Upcoming" ? "upcoming" : "");
+    status.className = "status";
     status.textContent = book.status;
 
     info.append(title, description, price, status);
-
-    if (book.date) {
-      const date = document.createElement("p");
-      date.textContent = "Publication date: " + book.date;
-      info.appendChild(date);
-    }
-
     item.appendChild(info);
 
-    if (!book.original) {
-      const actions = document.createElement("div");
-      actions.className = "book-actions";
+    const actions = document.createElement("div");
+    const remove = document.createElement("button");
+    remove.className = "btn";
+    remove.textContent = "REMOVE";
+    remove.type = "button";
 
-      const remove = document.createElement("button");
-      remove.className = "btn";
-      remove.textContent = "REMOVE";
-      remove.type = "button";
+    remove.addEventListener("click", async () => {
+      if (!confirm("Remove this book from your database?")) return;
 
-      remove.addEventListener("click", () => {
-        if (confirm("Remove this book from this browser's inventory?")) {
-          books = books.filter(entry => entry.id !== book.id);
-          if (saveBooks()) renderBooks();
-        }
-      });
+      const { error } = await client
+        .from("books")
+        .delete()
+        .eq("id", book.id);
 
-      actions.appendChild(remove);
-      item.appendChild(actions);
-    }
+      if (error) {
+        alert("Could not remove book.");
+        return;
+      }
 
+      await loadBooks();
+    });
+
+    actions.appendChild(remove);
+    item.appendChild(actions);
     list.appendChild(item);
   });
 
-  if (books.length === 0) {
-    list.innerHTML = '<p class="empty">No books in your inventory yet.</p>';
+  if (data.length === 0) {
+    list.textContent = "No books in your inventory yet.";
   }
 
   document.getElementById("publishedCount").textContent = published;
   document.getElementById("upcomingCount").textContent = upcoming;
-  document.getElementById("totalCount").textContent = books.length;
+  document.getElementById("totalCount").textContent = data.length;
 }
 
-document.getElementById("bookForm").addEventListener("submit", event => {
+document.getElementById("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const message = document.getElementById("loginMessage");
+  message.textContent = "Signing in...";
+
+  const { error } = await client.auth.signInWithPassword({
+    email: document.getElementById("loginEmail").value.trim(),
+    password: document.getElementById("loginPassword").value
+  });
+
+  if (error) {
+    message.textContent = "Sign-in failed. Check your email and password.";
+    return;
+  }
+
+  showDashboard(true);
+  await loadBooks();
+});
+
+document.getElementById("bookForm").addEventListener("submit", async event => {
   event.preventDefault();
 
   const newBook = {
-    id: "book-" + Date.now(),
     title: document.getElementById("title").value.trim(),
     description: document.getElementById("description").value.trim(),
     price: Number(document.getElementById("price").value),
-    date: document.getElementById("date").value,
-    status: document.getElementById("status").value,
-    original: false
+    publication_date: document.getElementById("date").value || null,
+    status: document.getElementById("status").value
   };
 
   if (!newBook.title || !newBook.description ||
@@ -260,19 +293,31 @@ document.getElementById("bookForm").addEventListener("submit", event => {
     return;
   }
 
-  books.push(newBook);
+  const { error } = await client.from("books").insert(newBook);
 
-  if (saveBooks()) {
-    renderBooks();
-    event.target.reset();
-    alert("Book added to your local inventory.");
-  } else {
-    books.pop();
+  if (error) {
+    alert("Could not add book. Please check your login and try again.");
+    return;
   }
+
+  event.target.reset();
+  await loadBooks();
+  alert("Book added successfully!");
 });
 
-renderBooks();
-</script>
+async function checkLogin() {
+  const { data } = await client.auth.getSession();
+
+  if (data.session) {
+    showDashboard(true);
+    await loadBooks();
+  } else {
+    showDashboard(false);
+  }
+}
+
+checkLogin();
+
 
 </body>
 </html>
