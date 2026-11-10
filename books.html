@@ -93,5 +93,84 @@ alt="When Becoming Feels Impossible book cover">
 © 2026 SK Publications · Shadrack Kyei
 </footer>
 
+<script>
+const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
+
+async function loadBooks() {
+  const section = document.createElement("section");
+  section.style.cssText =
+    "padding:50px 20px;max-width:1100px;margin:auto;";
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Our Published Books";
+  section.appendChild(heading);
+
+  const message = document.createElement("p");
+  message.textContent = "Loading publications...";
+  section.appendChild(message);
+
+  const container = document.createElement("div");
+  container.style.cssText =
+    "display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:25px;";
+
+  section.appendChild(container);
+
+  const footer = document.querySelector("footer");
+  document.body.insertBefore(section, footer || null);
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/books?select=title,description,price,status&status=eq.Published&order=created_at.desc",
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not retrieve books.");
+    }
+
+    const books = await response.json();
+    message.textContent = "";
+
+    if (books.length === 0) {
+      message.textContent = "No published books available yet.";
+      return;
+    }
+
+    books.forEach(book => {
+      const card = document.createElement("article");
+      card.style.cssText =
+        "padding:22px;border:1px solid #ddd;border-radius:12px;background:#fff;";
+
+      const title = document.createElement("h3");
+      title.textContent = book.title;
+
+      const description = document.createElement("p");
+      description.textContent = book.description;
+
+      const price = document.createElement("p");
+      price.textContent = "GH₵" + Number(book.price).toFixed(2);
+      price.style.fontWeight = "bold";
+
+      card.append(title, description, price);
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    message.textContent =
+      "Books could not load. Please try again later.";
+  }
+}
+
+loadBooks();
+</script>
+
 </body>
 </html>
