@@ -225,6 +225,7 @@ function editBook(book) {
 
   document.getElementById("title").value = book.title || "";
   document.getElementById("description").value = book.description || "";
+  document.getElementById("sampleText").value = book.sample_text || "";
   document.getElementById("price").value = book.price ?? "";
   document.getElementById("date").value = book.publication_date || "";
   document.getElementById("status").value = book.status || "Upcoming";
