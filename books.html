@@ -8,31 +8,118 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Georgia,serif;background:#faf9f6;color:#172a40;line-height:1.7}
-header{background:#14283e;padding:22px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+
+body{
+font-family:Georgia,serif;
+background:#faf9f6;
+color:#172a40;
+line-height:1.7
+}
+
+header{
+background:#14283e;
+padding:22px 7%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:15px
+}
+
 .logo{color:#d7b779;font-size:22px;font-weight:bold;letter-spacing:2px}
 header a{color:white;text-decoration:none;font:12px Arial,sans-serif}
+
 .hero{text-align:center;background:#eae6dc;padding:85px 20px}
 .label{color:#a17d45;letter-spacing:3px;font:12px Arial,sans-serif;margin-bottom:15px}
 h1{font-size:clamp(38px,6vw,60px);line-height:1.2}
 .hero p{max-width:600px;margin:20px auto;color:#666}
+
 main{max-width:1150px;margin:auto;padding:65px 25px}
 h2{font-size:32px;margin-bottom:12px}
 .intro{color:#666;margin-bottom:35px}
 .section{margin-bottom:75px}
-.books{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px}
-.card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 8px 30px #0000000c;padding-bottom:25px}
-.cover{width:100%;height:340px;object-fit:contain;background:#f0eee8;padding:18px}
-.placeholder{height:340px;background:linear-gradient(145deg,#14283e,#354e68);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:#d7b779;font-size:25px}
+
+.books{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:30px
+}
+
+.card{
+background:white;
+border-radius:8px;
+overflow:hidden;
+box-shadow:0 8px 30px #0000000c;
+padding-bottom:25px;
+transition:transform .25s
+}
+
+.card:hover{transform:translateY(-5px)}
+
+.cover{
+width:100%;
+height:340px;
+object-fit:contain;
+background:#f0eee8;
+padding:18px
+}
+
+.placeholder{
+height:340px;
+background:linear-gradient(145deg,#14283e,#354e68);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:30px;
+color:#d7b779;
+font-size:25px
+}
+
 .card-content{padding:22px}
 .card h3{font-size:21px;line-height:1.35}
 .card p{color:#666;margin:12px 0}
 .price{color:#a17d45!important;font-size:22px;font-weight:bold}
-.btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 20px;font:12px Arial,sans-serif;letter-spacing:1px;margin-top:12px;border-radius:3px}
+
+.btn{
+display:inline-block;
+background:#172a40;
+color:white;
+text-decoration:none;
+padding:13px 20px;
+font:12px Arial,sans-serif;
+letter-spacing:1px;
+margin-top:12px;
+border-radius:3px;
+text-align:center
+}
+
 .btn:hover{background:#a17d45}
-.future{margin-top:30px;text-align:center;background:#eae6dc;padding:45px 20px;border-radius:8px}
+
+.details-link{
+display:block;
+width:100%;
+margin-bottom:8px
+}
+
+.future{
+margin-top:30px;
+text-align:center;
+background:#eae6dc;
+padding:45px 20px;
+border-radius:8px
+}
+
 .loading{text-align:center;color:#777;padding:30px}
-footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px Arial,sans-serif}
+
+footer{
+background:#14283e;
+color:white;
+text-align:center;
+padding:30px;
+font:13px Arial,sans-serif
+}
+
 @media(max-width:500px){
 main{padding:45px 18px}
 .hero{padding:65px 18px}
@@ -69,7 +156,9 @@ main{padding:45px 18px}
 <div class="label">COMING SOON</div>
 <h2>More Books Are Coming.</h2>
 <p>Stay connected with SK Publications as new books and writing projects are released.</p>
-<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20updates%20about%20new%20SK%20Publications%20books.">GET UPDATES</a>
+<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20updates%20about%20new%20SK%20Publications%20books.">
+GET UPDATES
+</a>
 </section>
 
 </main>
@@ -79,11 +168,11 @@ main{padding:45px 18px}
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
 const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
 
-// Put your existing Supabase publishable key here.
 const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
 
 const client = window.supabase.createClient(
@@ -101,12 +190,15 @@ function showPlaceholder(card, title) {
 }
 
 async function loadBooks() {
-  collection.innerHTML = '<p class="loading">Loading our publications...</p>';
+
+  collection.innerHTML =
+    '<p class="loading">Loading our publications...</p>';
 
   try {
+
     const { data: books, error } = await client
       .from("books")
-      .select("title,description,price,status,cover_url")
+      .select("id,title,description,price,status,cover_url")
       .eq("status", "Published")
       .order("created_at", { ascending: false });
 
@@ -121,12 +213,14 @@ async function loadBooks() {
     }
 
     books.forEach(book => {
+
       const card = document.createElement("article");
       card.className = "card";
 
-      // Display the cover uploaded through the author dashboard.
       if (book.cover_url) {
+
         const cover = document.createElement("img");
+
         cover.className = "cover";
         cover.src = book.cover_url;
         cover.alt = book.title + " book cover";
@@ -137,8 +231,11 @@ async function loadBooks() {
         };
 
         card.appendChild(cover);
+
       } else {
+
         showPlaceholder(card, book.title);
+
       }
 
       const content = document.createElement("div");
@@ -162,35 +259,49 @@ async function loadBooks() {
       price.className = "price";
       price.textContent = "GH₵" + Number(book.price).toFixed(2);
 
+      const details = document.createElement("a");
+
+      details.className = "btn details-link";
+      details.href = "book.html?id=" + encodeURIComponent(book.id);
+      details.textContent = "VIEW BOOK DETAILS";
+
       const order = document.createElement("a");
+
       order.className = "btn";
-      order.href = "https://wa.me/233508773856?text=" +
-        encodeURIComponent("Hello, I would like to order " + book.title + ".");
+      order.href =
+        "https://wa.me/233508773856?text=" +
+        encodeURIComponent(
+          "Hello, I would like to order " + book.title + "."
+        );
+
       order.target = "_blank";
       order.rel = "noopener noreferrer";
       order.textContent = "ENQUIRE / ORDER";
 
-      content.append(label, title, author, description, price);
+      content.append(
+        label,
+        title,
+        author,
+        description,
+        price,
+        details,
+        order
+      );
 
-      if (book.title === "WHEN BECOMING FEELS IMPOSSIBLE") {
-        const details = document.createElement("a");
-        details.className = "btn";
-        details.href = "book.html";
-        details.textContent = "VIEW BOOK DETAILS";
-        content.appendChild(details);
-      }
-
-      content.appendChild(order);
       card.appendChild(content);
       collection.appendChild(card);
+
     });
 
   } catch (error) {
+
     console.error("Bookstore loading error:", error);
 
     collection.innerHTML =
       '<p class="loading">We could not load the books. Please try again later.</p>';
+
   }
+
 }
 
 loadBooks();
@@ -199,5 +310,6 @@ loadBooks();
 
 </body>
 </html>
+
 
 
