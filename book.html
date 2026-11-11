@@ -8,24 +8,99 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Georgia,serif;background:#faf9f6;color:#202d3d;line-height:1.8}
+
+body{
+font-family:Georgia,serif;
+background:#faf9f6;
+color:#202d3d;
+line-height:1.8
+}
+
 header{background:#14283e;padding:22px 7%}
 header a{color:#d7b779;text-decoration:none;letter-spacing:2px;font-weight:bold}
-.hero{text-align:center;background:#eae6dc;padding:55px 20px}
+
+.hero{text-align:center;background:#eae6dc;padding:35px 20px}
 .hero a{color:#a17d45;text-decoration:none;font:12px Arial,sans-serif}
+
 main{max-width:1100px;margin:auto;padding:65px 25px}
-.book{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.book img{width:100%;max-width:430px;display:block;margin:auto;border-radius:5px;box-shadow:0 20px 45px #0002}
-.label{color:#a17d45;font:12px Arial,sans-serif;letter-spacing:3px;margin-bottom:15px}
+
+.book{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center
+}
+
+.book img{
+width:100%;
+max-width:430px;
+display:block;
+margin:auto;
+border-radius:5px;
+box-shadow:0 20px 45px #0002
+}
+
+.label{
+color:#a17d45;
+font:12px Arial,sans-serif;
+letter-spacing:3px;
+margin-bottom:15px
+}
+
 h1{font-size:clamp(32px,5vw,48px);line-height:1.2;margin-bottom:20px}
 h2{font-size:30px;margin:35px 0 15px}
 p{color:#626262;margin:15px 0}
+
 .price{font-size:25px;color:#a17d45;font-weight:bold}
-.btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:14px 23px;font:12px Arial,sans-serif;letter-spacing:1px;margin:12px 5px 12px 0;border-radius:3px}
+
+.btn{
+display:inline-block;
+background:#172a40;
+color:white;
+text-decoration:none;
+padding:14px 23px;
+font:12px Arial,sans-serif;
+letter-spacing:1px;
+margin:12px 5px 12px 0;
+border-radius:3px
+}
+
 .btn.gold{background:#b18b50}
-.details{border-top:1px solid #ddd;margin-top:55px;padding-top:30px}
-footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px Arial,sans-serif}
-@media(max-width:700px){.book{grid-template-columns:1fr;text-align:center}main{padding:45px 20px}}
+
+.details{
+border-top:1px solid #ddd;
+margin-top:55px;
+padding-top:30px
+}
+
+.sample{
+background:#f0ede6;
+padding:25px;
+border-left:4px solid #b18b50;
+margin-top:20px;
+white-space:pre-wrap;
+color:#555;
+line-height:2
+}
+
+.message{
+text-align:center;
+padding:40px 15px;
+color:#777
+}
+
+footer{
+background:#14283e;
+color:white;
+text-align:center;
+padding:30px;
+font:13px Arial,sans-serif
+}
+
+@media(max-width:700px){
+.book{grid-template-columns:1fr;text-align:center}
+main{padding:45px 20px}
+}
 </style>
 </head>
 
@@ -41,42 +116,81 @@ footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px A
 
 <main>
 
+<div id="loading" class="message">
+Loading book details...
+</div>
+
+<div id="bookContent" style="display:none">
+
 <div class="book">
 
 <div>
-<img src="file_00000000454c81f499ffcea37a814fea.png"
-alt="WHEN BECOMING FEELS IMPOSSIBLE by Shadrack Kyei">
+<img id="cover" src="" alt="Book cover">
 </div>
 
 <div>
 <div class="label">FEATURED PUBLICATION</div>
-<h1>WHEN BECOMING FEELS IMPOSSIBLE</h1>
+
+<h1 id="title"></h1>
+
 <p>By Shadrack Kyei</p>
 
-<div class="price">GH₵30</div>
+<div class="price" id="price"></div>
 
-<p>A thoughtful exploration of growth, transformation, and the challenge of becoming. This book invites readers to approach change with patience and appreciate the life they are already living.</p>
+<p id="description"></p>
 
-<a class="btn gold" href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE.">ORDER THE BOOK</a>
+<a id="orderButton" class="btn gold" href="#">
+ORDER THE BOOK
+</a>
 
-<a class="btn" href="index.html">BACK TO HOME</a>
+<a class="btn" href="books.html">BACK TO BOOKSTORE</a>
 </div>
 
 </div>
 
 <div class="details">
+
 <div class="label">ABOUT THIS BOOK</div>
+
 <h2>The Journey of Becoming</h2>
 
-<p>Growth is not always a straightforward journey. There are seasons when change feels difficult, when the future seems uncertain, and when becoming a different version of yourself feels impossible.</p>
+<p>
+Growth is not always a straightforward journey. There are seasons
+when change feels difficult, when the future seems uncertain,
+and when becoming a different version of yourself feels impossible.
+</p>
 
-<p>This book invites readers to reflect on personal growth, transformation, patience and the importance of appreciating the life they are already living.</p>
+<p>
+This book invites readers to reflect on personal growth,
+transformation, patience and the importance of appreciating
+the life they are already living.
+</p>
+
+<h2>Read a Sample</h2>
+
+<div id="sample" class="sample">
+No reading sample has been added yet.
+</div>
 
 <h2>About the Author</h2>
 
-<p>Shadrack Kyei is an emerging author whose writing explores personal growth, transformation, self-discovery, and the experiences that shape human life.</p>
+<p>
+Shadrack Kyei is an emerging author whose writing explores
+personal growth, transformation, self-discovery, and the
+experiences that shape human life.
+</p>
 
-<p>Through thoughtful reflections and meaningful storytelling, he hopes to encourage readers to approach life with patience, embrace their journey, and appreciate who they are becoming.</p>
+<p>
+Through thoughtful reflections and meaningful storytelling,
+he hopes to encourage readers to approach life with patience,
+embrace their journey, and appreciate who they are becoming.
+</p>
+
+</div>
+</div>
+
+<div id="error" class="message" style="display:none">
+We couldn't load this book right now. Please refresh the page and try again.
 </div>
 
 </main>
@@ -85,6 +199,89 @@ alt="WHEN BECOMING FEELS IMPOSSIBLE by Shadrack Kyei">
 © 2026 SK Publications · Shadrack Kyei
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
+
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadBook() {
+  const loading = document.getElementById("loading");
+  const content = document.getElementById("bookContent");
+  const errorBox = document.getElementById("error");
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const bookId = params.get("id");
+
+    let query = client
+      .from("books")
+      .select("id,title,description,price,status,cover_url,sample_text")
+      .eq("status", "Published");
+
+    if (bookId) {
+      query = query.eq("id", bookId);
+    } else {
+      query = query.eq(
+        "title",
+        "WHEN BECOMING FEELS IMPOSSIBLE"
+      );
+    }
+
+    const { data: book, error } = await query.maybeSingle();
+
+    if (error) throw error;
+    if (!book) throw new Error("Book not found");
+
+    document.getElementById("title").textContent = book.title;
+    document.getElementById("description").textContent =
+      book.description || "";
+
+    document.getElementById("price").textContent =
+      "GH₵" + Number(book.price).toFixed(2);
+
+    const cover = document.getElementById("cover");
+
+    if (book.cover_url) {
+      cover.src = book.cover_url;
+    } else {
+      cover.style.display = "none";
+    }
+
+    document.getElementById("sample").textContent =
+      book.sample_text && book.sample_text.trim()
+        ? book.sample_text
+        : "A reading sample will be available soon.";
+
+    const message =
+      "Hello, I want to order " + book.title + ".";
+
+    document.getElementById("orderButton").href =
+      "https://wa.me/233508773856?text=" +
+      encodeURIComponent(message);
+
+    document.title = book.title + " | SK Publications";
+
+    loading.style.display = "none";
+    content.style.display = "block";
+
+  } catch (error) {
+    console.error("Book loading error:", error);
+    loading.style.display = "none";
+    errorBox.style.display = "block";
+  }
+}
+
+loadBook();
+</script>
+
 </body>
 </html>
+
 
