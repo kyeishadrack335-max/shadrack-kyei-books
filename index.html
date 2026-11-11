@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,37 +11,49 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:Georgia,serif;color:#202d3d;background:#faf9f6;line-height:1.7}
+
 header{background:#14283e;padding:20px 7%;position:sticky;top:0;z-index:10}
 nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
 .logo{color:#d7b779;font-size:23px;font-weight:bold;letter-spacing:2px}
 nav a{color:white;text-decoration:none;font-family:Arial,sans-serif;font-size:12px;margin:0 9px}
 nav a:hover{color:#d7b779}
+
 .hero{background:#eae6dc;padding:110px 7%;text-align:center}
 .eyebrow{color:#a17d45;font:12px Arial,sans-serif;letter-spacing:4px;margin-bottom:20px}
 .hero h1{font-size:clamp(40px,7vw,75px);line-height:1.12;max-width:850px;margin:auto;color:#172a40}
 .hero p{max-width:620px;margin:25px auto;color:#626262}
+
 .btn{display:inline-block;background:#172a40;color:white;padding:14px 25px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1px;margin:8px 5px;border-radius:3px}
 .btn:hover{background:#a17d45}
 .btn.gold{background:#b18b50}
+
 section{padding:85px 7%}
 .container{max-width:1150px;margin:auto}
 .section-label{font:12px Arial,sans-serif;letter-spacing:3px;color:#a17d45;margin-bottom:12px}
 h2{font-size:clamp(29px,4vw,42px);line-height:1.25;margin-bottom:20px}
+
 .featured{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}
 .book-image{text-align:center}
 .book-image img{width:100%;max-width:390px;height:auto;border-radius:5px;box-shadow:0 20px 45px #0002}
 .book-info p{color:#626262;margin:17px 0}
 .price{font-size:25px;color:#a17d45!important;font-weight:bold}
+
 .about{background:#172a40;color:white}
 .about p{max-width:800px;color:#e0e4e9;margin:15px 0}
+
 .reviews{background:#eae6dc;text-align:center}
 .review-card{background:white;padding:35px;max-width:650px;margin:30px auto;border-radius:8px}
 .review-card p{color:#666;margin:15px 0}
+
 .updates{text-align:center}
 .updates p{max-width:600px;margin:15px auto;color:#666}
+
 .contact{background:#f0eee8;text-align:center}
 .contact p{color:#626262;margin:15px auto;max-width:600px}
+
+.loading{color:#777;padding:20px}
 footer{background:#14283e;color:#ddd;text-align:center;padding:30px 15px;font:13px Arial,sans-serif}
+
 @media(max-width:750px){
 nav{justify-content:center}
 nav div:last-child{text-align:center}
@@ -60,6 +73,7 @@ section{padding:65px 6%}
 <div>
 <a href="#home">HOME</a>
 <a href="books.html">BOOKSTORE</a>
+<a href="about.html">ABOUT</a>
 <a href="#about">AUTHOR</a>
 <a href="#reviews">REVIEWS</a>
 <a href="#contact">CONTACT</a>
@@ -73,7 +87,8 @@ section{padding:65px 6%}
 <div class="eyebrow">WELCOME TO SK PUBLICATIONS</div>
 <h1>Stories, ideas and words that stay with you.</h1>
 <p>Discover thoughtful books exploring growth, transformation, identity and the journey of becoming.</p>
-<a class="btn" href="#books">EXPLORE OUR BOOKS</a>
+<a class="btn" href="books.html">EXPLORE OUR BOOKS</a>
+<a class="btn gold" href="about.html">ABOUT US</a>
 </section>
 
 <section id="books">
@@ -82,24 +97,29 @@ section{padding:65px 6%}
 <h2>Featured Publication</h2>
 
 <div class="featured">
+
 <div class="book-image">
-<img src="file_00000000454c81f499ffcea37a814fea.png"
-alt="WHEN BECOMING FEELS IMPOSSIBLE by Shadrack Kyei">
+<img id="featuredCover" src="" alt="Book cover" style="display:none">
+<p id="coverLoading" class="loading">Loading book cover...</p>
 </div>
 
 <div class="book-info">
 <div class="section-label">A BOOK BY SHADRACK KYEI</div>
-<h2>WHEN BECOMING FEELS IMPOSSIBLE</h2>
-<p class="price">GH₵30</p>
-<p>A thoughtful exploration of growth, transformation, and the challenge of becoming. This book invites readers to approach change with patience and appreciate the life they are already living.</p>
+<h2 id="featuredTitle">WHEN BECOMING FEELS IMPOSSIBLE</h2>
+<p class="price" id="featuredPrice">GH₵30.00</p>
 
-<a class="btn" href="book.html">DISCOVER THE BOOK</a>
+<p id="featuredDescription">
+A thoughtful exploration of growth, transformation, and the challenge of becoming.
+</p>
 
-<a class="btn gold"
-href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE.">
+<a class="btn" id="discoverButton" href="book.html">DISCOVER THE BOOK</a>
+
+<a class="btn gold" id="orderButton"
+href="https://wa.me/233508773856">
 ORDER / ENQUIRE
 </a>
 </div>
+
 </div>
 </div>
 </section>
@@ -114,6 +134,8 @@ ORDER / ENQUIRE
 <p>Through thoughtful reflections and meaningful storytelling, he hopes to encourage readers to approach life with patience, embrace their journey, and appreciate who they are becoming.</p>
 
 <p>His book, <em>When Becoming Feels Impossible</em>, reflects his belief that growth is not always about becoming someone different, but also about learning to value the life one is already living.</p>
+
+<a class="btn gold" href="about.html">DISCOVER OUR STORY</a>
 </div>
 </section>
 
@@ -156,5 +178,73 @@ ORDER / ENQUIRE
 <p>Words for the journey of becoming.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
+
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadFeaturedBook() {
+  try {
+    const { data: book, error } = await client
+      .from("books")
+      .select("id,title,description,price,cover_url")
+      .eq("status", "Published")
+      .eq("title", "WHEN BECOMING FEELS IMPOSSIBLE")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!book) return;
+
+    document.getElementById("featuredTitle").textContent = book.title;
+
+    document.getElementById("featuredPrice").textContent =
+      "GH₵" + Number(book.price).toFixed(2);
+
+    document.getElementById("featuredDescription").textContent =
+      book.description || "Discover this publication from SK Publications.";
+
+    document.getElementById("discoverButton").href =
+      "book.html?id=" + encodeURIComponent(book.id);
+
+    document.getElementById("orderButton").href =
+      "https://wa.me/233508773856?text=" +
+      encodeURIComponent("Hello, I want to order " + book.title + ".");
+
+    const cover = document.getElementById("featuredCover");
+    const coverLoading = document.getElementById("coverLoading");
+
+    if (book.cover_url) {
+      cover.src = book.cover_url;
+
+      cover.onload = () => {
+        cover.style.display = "inline-block";
+        coverLoading.style.display = "none";
+      };
+
+      cover.onerror = () => {
+        coverLoading.textContent = "Book cover currently unavailable.";
+      };
+    } else {
+      coverLoading.textContent = "Book cover coming soon.";
+    }
+
+  } catch (error) {
+    console.error("Featured book error:", error);
+    document.getElementById("coverLoading").textContent =
+      "Book information is temporarily unavailable.";
+  }
+}
+
+loadFeaturedBook();
+</script>
+
 </body>
 </html>
+
