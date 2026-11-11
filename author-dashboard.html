@@ -443,6 +443,7 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
   const submitButton = document.getElementById("submitButton");
   const selectedFile = document.getElementById("cover").files[0];
 
+  
   const bookDetails = {
     title: document.getElementById("title").value.trim(),
     description: document.getElementById("description").value.trim(),
@@ -451,6 +452,8 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
     publication_date: document.getElementById("date").value || null,
     status: document.getElementById("status").value,
     cover_url: currentCoverUrl
+  };if (!bookDetails.title || !bookDetails.description ||
+
 };
   };
 
