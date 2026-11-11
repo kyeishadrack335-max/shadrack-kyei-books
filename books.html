@@ -20,17 +20,23 @@ main{max-width:1150px;margin:auto;padding:65px 25px}
 h2{font-size:32px;margin-bottom:12px}
 .intro{color:#666;margin-bottom:35px}
 .section{margin-bottom:75px}
-.books{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:35px}
+.books{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px}
 .card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 8px 30px #0000000c;padding-bottom:25px}
-.card img{width:100%;max-height:370px;object-fit:contain;background:#f0eee8;padding:20px}
+.cover{width:100%;height:340px;object-fit:contain;background:#f0eee8;padding:18px}
+.placeholder{height:340px;background:linear-gradient(145deg,#14283e,#354e68);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:#d7b779;font-size:25px}
 .card-content{padding:22px}
 .card h3{font-size:21px;line-height:1.35}
 .card p{color:#666;margin:12px 0}
-.price{color:#a17d45;font-size:22px;font-weight:bold}
+.price{color:#a17d45!important;font-size:22px;font-weight:bold}
 .btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 20px;font:12px Arial,sans-serif;letter-spacing:1px;margin-top:12px;border-radius:3px}
 .btn:hover{background:#a17d45}
 .future{margin-top:30px;text-align:center;background:#eae6dc;padding:45px 20px;border-radius:8px}
+.loading{text-align:center;color:#777;padding:30px}
 footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px Arial,sans-serif}
+@media(max-width:500px){
+main{padding:45px 18px}
+.hero{padding:65px 18px}
+}
 </style>
 </head>
 
@@ -51,33 +57,12 @@ footer{background:#14283e;color:white;text-align:center;padding:30px;font:13px A
 
 <section class="section">
 <div class="label">OUR COLLECTION</div>
-<h2>Featured Books</h2>
-<p class="intro">Explore selected publications from Shadrack Kyei.</p>
+<h2>Our Published Books</h2>
+<p class="intro">Explore publications from Shadrack Kyei.</p>
 
-<div class="books">
-
-<div class="card">
-<img src="file_00000000454c81f499ffcea37a814fea.png"
-alt="When Becoming Feels Impossible book cover">
-
-<div class="card-content">
-<div class="label">FEATURED PUBLICATION</div>
-<h3>WHEN BECOMING FEELS IMPOSSIBLE</h3>
-<p>By Shadrack Kyei</p>
-<p>A thoughtful exploration of growth, transformation and the challenge of becoming.</p>
-<div class="price">GH₵30</div>
-<a class="btn" href="book.html">VIEW BOOK DETAILS</a>
-<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20want%20to%20order%20WHEN%20BECOMING%20FEELS%20IMPOSSIBLE.">ORDER BOOK</a>
+<div class="books" id="bookCollection">
+<p class="loading">Loading our publications...</p>
 </div>
-</div>
-
-</div>
-</section>
-
-<section class="section">
-<div class="label">FRESH FROM THE AUTHOR</div>
-<h2>New Releases</h2>
-<p class="intro">New publications will appear here when they are officially released.</p>
 </section>
 
 <section class="future">
@@ -93,84 +78,119 @@ alt="When Becoming Feels Impossible book cover">
 © 2026 SK Publications · Shadrack Kyei
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+
 const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
 
+// Keep your existing Supabase publishable key here.
 const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
 
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const collection = document.getElementById("bookCollection");
+
 async function loadBooks() {
-  const section = document.createElement("section");
-  section.style.cssText =
-    "padding:50px 20px;max-width:1100px;margin:auto;";
-
-  const heading = document.createElement("h2");
-  heading.textContent = "Our Published Books";
-  section.appendChild(heading);
-
-  const message = document.createElement("p");
-  message.textContent = "Loading publications...";
-  section.appendChild(message);
-
-  const container = document.createElement("div");
-  container.style.cssText =
-    "display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:25px;";
-
-  section.appendChild(container);
-
-  const footer = document.querySelector("footer");
-  document.body.insertBefore(section, footer || null);
+  collection.innerHTML = '<p class="loading">Loading our publications...</p>';
 
   try {
-    const response = await fetch(
-      SUPABASE_URL +
-      "/rest/v1/books?select=title,description,price,status&status=eq.Published&order=created_at.desc",
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY
-        }
-      }
-    );
+    const { data: books, error } = await client
+      .from("books")
+      .select("title,description,price,status")
+      .eq("status", "Published")
+      .order("created_at", { ascending: false });
 
-    if (!response.ok) {
-      throw new Error("Could not retrieve books.");
-    }
+    if (error) throw error;
 
-    const books = await response.json();
-    message.textContent = "";
+    collection.innerHTML = "";
 
-    if (books.length === 0) {
-      message.textContent = "No published books available yet.";
+    if (!books || books.length === 0) {
+      collection.innerHTML =
+        '<p class="loading">No published books available yet. Please check back soon.</p>';
       return;
     }
 
     books.forEach(book => {
       const card = document.createElement("article");
-      card.style.cssText =
-        "padding:22px;border:1px solid #ddd;border-radius:12px;background:#fff;";
+      card.className = "card";
+
+      // Show the existing cover for the main book.
+      if (book.title === "WHEN BECOMING FEELS IMPOSSIBLE") {
+        const cover = document.createElement("img");
+        cover.className = "cover";
+        cover.src = "file_00000000454c81f499ffcea37a814fea.png";
+        cover.alt = "When Becoming Feels Impossible book cover";
+        cover.onerror = () => {
+          const placeholder = document.createElement("div");
+          placeholder.className = "placeholder";
+          placeholder.textContent = book.title;
+          cover.replaceWith(placeholder);
+        };
+        card.appendChild(cover);
+      } else {
+        const placeholder = document.createElement("div");
+        placeholder.className = "placeholder";
+        placeholder.textContent = book.title;
+        card.appendChild(placeholder);
+      }
+
+      const content = document.createElement("div");
+      content.className = "card-content";
+
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = "SK PUBLICATIONS";
 
       const title = document.createElement("h3");
       title.textContent = book.title;
 
+      const author = document.createElement("p");
+      author.textContent = "By Shadrack Kyei";
+
       const description = document.createElement("p");
-      description.textContent = book.description;
+      description.textContent = book.description || "A publication from SK Publications.";
 
       const price = document.createElement("p");
+      price.className = "price";
       price.textContent = "GH₵" + Number(book.price).toFixed(2);
-      price.style.fontWeight = "bold";
 
-      card.append(title, description, price);
-      container.appendChild(card);
+      const order = document.createElement("a");
+      order.className = "btn";
+      order.href = "https://wa.me/233508773856?text=" +
+        encodeURIComponent("Hello, I would like to order " + book.title + ".");
+      order.target = "_blank";
+      order.rel = "noopener noreferrer";
+      order.textContent = "ENQUIRE / ORDER";
+
+      content.append(label, title, author, description, price);
+
+      // The existing detailed book page belongs to the main publication.
+      if (book.title === "WHEN BECOMING FEELS IMPOSSIBLE") {
+        const details = document.createElement("a");
+        details.className = "btn";
+        details.href = "book.html";
+        details.textContent = "VIEW BOOK DETAILS";
+        content.appendChild(details);
+      }
+
+      content.appendChild(order);
+      card.appendChild(content);
+      collection.appendChild(card);
     });
 
   } catch (error) {
-    message.textContent =
-      "Books could not load. Please try again later.";
+    collection.innerHTML =
+      '<p class="loading">We could not load the books. Please try again later.</p>';
   }
 }
 
 loadBooks();
+
 </script>
 
 </body>
 </html>
+
