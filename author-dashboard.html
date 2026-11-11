@@ -9,7 +9,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f5f3ee;color:#172a40}
-header{background:#14283e;color:white;padding:25px}
+header{background:#14283e;color:white;padding:25px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
 header h2{color:#d7b779;letter-spacing:2px}
 header p{font-size:13px;margin-top:8px;color:#ddd}
 main{max-width:1100px;margin:auto;padding:35px 20px}
@@ -23,22 +23,24 @@ main{max-width:1100px;margin:auto;padding:35px 20px}
 .panel{margin-bottom:25px}
 .panel h2{font-family:Georgia,serif;margin-bottom:15px}
 .book{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:20px;padding:15px 0;border-bottom:1px solid #eee}
-.book img{width:85px;border-radius:5px}
 .book-info{flex:1;min-width:180px}
-.book-info h3{font-family:Georgia,serif;font-size:18px}
+.book-info h3{font-family:Georgia,serif;font-size:18px;margin-bottom:8px}
 .price{color:#a17d45;font-weight:bold;margin-top:8px}
 .status{display:inline-block;background:#e5f1e7;color:#27643a;padding:6px 12px;border-radius:20px;font-size:12px;margin-top:10px}
 .upcoming{background:#fff1d9;color:#8b6424}
 .btn{display:inline-block;background:#172a40;color:white;text-decoration:none;padding:13px 18px;border:0;border-radius:4px;font-size:12px;margin-top:15px;cursor:pointer}
 .btn:hover{background:#a17d45}
+.btn-secondary{background:#777}
+.btn-danger{background:#9b3434}
 form{display:grid;gap:14px;margin-top:20px}
 label{font-size:13px;font-weight:bold}
 input,textarea,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:5px;font:14px Arial;background:white;color:#172a40}
 textarea{min-height:90px;resize:vertical}
 .field{display:grid;gap:7px}
-.book-actions button{margin-right:7px}
+.book-actions{display:flex;gap:8px;flex-wrap:wrap}
 .empty{color:#777;margin-top:20px}
-.notice{font-size:12px;color:#8b6424;background:#fff5df;padding:13px;border-radius:5px;margin-top:15px}
+.notice{font-size:12px;color:#27643a;background:#e5f1e7;padding:13px;border-radius:5px;margin-top:15px}
+#logoutButton{margin-top:0}
 footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:12px}
 </style>
 </head>
@@ -46,8 +48,11 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 <body>
 
 <header>
+<div>
 <h2>SK PUBLICATIONS</h2>
 <p>AUTHOR MANAGEMENT DASHBOARD</p>
+</div>
+<button class="btn btn-danger" id="logoutButton" type="button" style="display:none">LOGOUT</button>
 </header>
 
 <main>
@@ -57,10 +62,10 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 <p>Your publishing workspace. Organise your books, prices and upcoming releases.</p>
 </section>
 
-<section class="stats">
+<section class="stats" style="display:none">
 <div class="stat">
 <p>Published Books</p>
-<h2 id="publishedCount">1</h2>
+<h2 id="publishedCount">0</h2>
 </div>
 <div class="stat">
 <p>Upcoming Books</p>
@@ -68,18 +73,18 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 </div>
 <div class="stat">
 <p>Total Books</p>
-<h2 id="totalCount">1</h2>
+<h2 id="totalCount">0</h2>
 </div>
 </section>
 
-<section class="panel">
+<section class="panel" style="display:none">
 <h2>Your Book Inventory</h2>
 <p>Keep track of your published and upcoming books.</p>
 <div id="bookList"></div>
 </section>
 
-<section class="panel">
-<h2>Add a New Book</h2>
+<section class="panel" style="display:none">
+<h2 id="formHeading">Add a New Book</h2>
 <p>Enter the details of a new publication below.</p>
 
 <form id="bookForm">
@@ -112,16 +117,17 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 </select>
 </div>
 
-<button class="btn" type="submit">ADD BOOK TO INVENTORY</button>
+<button class="btn" id="submitButton" type="submit">ADD BOOK TO INVENTORY</button>
+<button class="btn btn-secondary" id="cancelEdit" type="button" style="display:none">CANCEL EDIT</button>
 
 </form>
 
 <p class="notice">
-Your entries are saved only in this browser on this device. This dashboard is not password-protected and is not a private website.
+Your dashboard requires author login. Keep your login details private and always log out when you finish.
 </p>
 </section>
 
-<section class="panel">
+<section class="panel" style="display:none">
 <h2>Quick Links</h2>
 <a class="btn" href="index.html">HOMEPAGE</a>
 <a class="btn" href="books.html">BOOKSTORE</a>
@@ -133,21 +139,23 @@ Your entries are saved only in this browser on this device. This dashboard is no
 <footer>
 © 2026 SK Publications · Shadrack Kyei
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  alert("Dashboard script is running!");
+
 const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
+
+// Replace the text below with your existing Supabase publishable key.
 const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
 
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const panels = document.querySelectorAll(".panel");
 const stats = document.querySelector(".stats");
-panels[0].style.display = "none";
-panels[1].style.display = "none";
-stats.style.display = "none";
-
 const login = document.createElement("section");
+
+let editingBookId = null;
+
 login.className = "panel";
 login.style.cssText = "max-width:500px;margin:30px auto;";
 login.innerHTML = `
@@ -155,24 +163,57 @@ login.innerHTML = `
   <p>Sign in to manage your publications.</p>
   <form id="loginForm">
     <div class="field">
-      <label>Email address</label>
+      <label for="loginEmail">Email address</label>
       <input id="loginEmail" type="email" required>
     </div>
     <div class="field">
-      <label>Password</label>
+      <label for="loginPassword">Password</label>
       <input id="loginPassword" type="password" required>
     </div>
     <button class="btn" type="submit">SIGN IN</button>
     <p id="loginMessage"></p>
   </form>
 `;
+
 document.querySelector(".welcome").after(login);
 
 function showDashboard(show) {
   login.style.display = show ? "none" : "block";
   stats.style.display = show ? "grid" : "none";
-  panels[0].style.display = show ? "block" : "none";
-  panels[1].style.display = show ? "block" : "none";
+
+  panels.forEach(panel => {
+    panel.style.display = show ? "block" : "none";
+  });
+
+  document.getElementById("logoutButton").style.display =
+    show ? "inline-block" : "none";
+}
+
+function resetForm() {
+  document.getElementById("bookForm").reset();
+  editingBookId = null;
+
+  document.getElementById("formHeading").textContent = "Add a New Book";
+  document.getElementById("submitButton").textContent = "ADD BOOK TO INVENTORY";
+  document.getElementById("cancelEdit").style.display = "none";
+}
+
+function editBook(book) {
+  editingBookId = book.id;
+
+  document.getElementById("title").value = book.title || "";
+  document.getElementById("description").value = book.description || "";
+  document.getElementById("price").value = book.price ?? "";
+  document.getElementById("date").value = book.publication_date || "";
+  document.getElementById("status").value = book.status || "Upcoming";
+
+  document.getElementById("formHeading").textContent = "Edit Book";
+  document.getElementById("submitButton").textContent = "SAVE CHANGES";
+  document.getElementById("cancelEdit").style.display = "inline-block";
+
+  document.getElementById("formHeading").scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 async function loadBooks() {
@@ -190,6 +231,7 @@ async function loadBooks() {
   }
 
   list.innerHTML = "";
+
   let published = 0;
   let upcoming = 0;
 
@@ -207,7 +249,7 @@ async function loadBooks() {
     title.textContent = book.title;
 
     const description = document.createElement("p");
-    description.textContent = book.description;
+    description.textContent = book.description || "";
 
     const price = document.createElement("p");
     price.className = "price";
@@ -217,17 +259,32 @@ async function loadBooks() {
     status.className = "status";
     status.textContent = book.status;
 
+    if (book.status === "Upcoming") {
+      status.classList.add("upcoming");
+    }
+
     info.append(title, description, price, status);
     item.appendChild(info);
 
     const actions = document.createElement("div");
+    actions.className = "book-actions";
+
+    const edit = document.createElement("button");
+    edit.className = "btn";
+    edit.textContent = "EDIT";
+    edit.type = "button";
+
+    edit.addEventListener("click", () => {
+      editBook(book);
+    });
+
     const remove = document.createElement("button");
-    remove.className = "btn";
+    remove.className = "btn btn-danger";
     remove.textContent = "REMOVE";
     remove.type = "button";
 
     remove.addEventListener("click", async () => {
-      if (!confirm("Remove this book from your database?")) return;
+      if (!confirm("Are you sure you want to remove this book?")) return;
 
       const { error } = await client
         .from("books")
@@ -235,14 +292,17 @@ async function loadBooks() {
         .eq("id", book.id);
 
       if (error) {
-        alert("Could not remove book.");
+        alert("Could not remove book. Please try again.");
         return;
       }
 
+      if (editingBookId === book.id) resetForm();
+
       await loadBooks();
+      alert("Book removed successfully.");
     });
 
-    actions.appendChild(remove);
+    actions.append(edit, remove);
     item.appendChild(actions);
     list.appendChild(item);
   });
@@ -279,7 +339,7 @@ document.getElementById("loginForm").addEventListener("submit", async event => {
 document.getElementById("bookForm").addEventListener("submit", async event => {
   event.preventDefault();
 
-  const newBook = {
+  const bookDetails = {
     title: document.getElementById("title").value.trim(),
     description: document.getElementById("description").value.trim(),
     price: Number(document.getElementById("price").value),
@@ -287,26 +347,64 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
     status: document.getElementById("status").value
   };
 
-  if (!newBook.title || !newBook.description ||
-      !Number.isFinite(newBook.price) || newBook.price < 0) {
+  if (!bookDetails.title || !bookDetails.description ||
+      !Number.isFinite(bookDetails.price) || bookDetails.price < 0) {
     alert("Please enter valid book details.");
     return;
   }
 
-  const { error } = await client.from("books").insert(newBook);
+  let result;
 
-  if (error) {
-    alert("Could not add book. Please check your login and try again.");
+  if (editingBookId) {
+    result = await client
+      .from("books")
+      .update(bookDetails)
+      .eq("id", editingBookId);
+  } else {
+    result = await client
+      .from("books")
+      .insert(bookDetails);
+  }
+
+  if (result.error) {
+    alert("Could not save the book. Please check your login and try again.");
     return;
   }
 
-  event.target.reset();
+  const wasEditing = Boolean(editingBookId);
+
+  resetForm();
   await loadBooks();
-  alert("Book added successfully!");
+
+  alert(wasEditing ? "Book updated successfully!" : "Book added successfully!");
+});
+
+document.getElementById("cancelEdit").addEventListener("click", resetForm);
+
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  const confirmed = confirm("Are you sure you want to log out?");
+  if (!confirmed) return;
+
+  const { error } = await client.auth.signOut();
+
+  if (error) {
+    alert("Could not log out. Please try again.");
+    return;
+  }
+
+  resetForm();
+  showDashboard(false);
+  document.getElementById("loginPassword").value = "";
+  document.getElementById("loginMessage").textContent = "";
 });
 
 async function checkLogin() {
-  const { data } = await client.auth.getSession();
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+    showDashboard(false);
+    return;
+  }
 
   if (data.session) {
     showDashboard(true);
@@ -316,12 +414,13 @@ async function checkLogin() {
   }
 }
 
-  checkLogin();
+checkLogin();
 
 </script>
 
 </body>
 </html>
+
 
 
 
