@@ -444,19 +444,23 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
   const selectedFile = document.getElementById("cover").files[0];
 
   
-  const bookDetails = {
-    title: document.getElementById("title").value.trim(),
-    description: document.getElementById("description").value.trim(),
-    sample_text: document.getElementById("sampleText").value.trim(),
-    price: Number(document.getElementById("price").value),
-    publication_date: document.getElementById("date").value || null,
-    status: document.getElementById("status").value,
-    cover_url: currentCoverUrl
-  };
-  if (!bookDetails.title || !bookDetails.description ||
-
+  
+const bookDetails = {
+  title: document.getElementById("title").value.trim(),
+  description: document.getElementById("description").value.trim(),
+  sample_text: document.getElementById("sampleText").value.trim(),
+  price: Number(document.getElementById("price").value),
+  publication_date: document.getElementById("date").value || null,
+  status: document.getElementById("status").value,
+  cover_url: currentCoverUrl
 };
-  };
+
+if (!bookDetails.title || !bookDetails.description ||
+    !Number.isFinite(bookDetails.price) || bookDetails.price < 0) {
+  alert("Please enter valid book details.");
+  return;
+}
+
 
   if (!bookDetails.title || !bookDetails.description ||
       !Number.isFinite(bookDetails.price) || bookDetails.price < 0) {
