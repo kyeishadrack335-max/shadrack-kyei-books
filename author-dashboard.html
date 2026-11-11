@@ -42,6 +42,9 @@ textarea{min-height:90px;resize:vertical}
 .notice{font-size:12px;color:#27643a;background:#e5f1e7;padding:13px;border-radius:5px;margin-top:15px}
 #logoutButton{margin-top:0}
 footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:12px}
+.cover-preview{width:150px;max-width:100%;height:190px;object-fit:contain;background:#f0eee9;border:1px solid #ddd;border-radius:5px;display:none;margin-top:8px}
+.book-cover{width:85px;height:115px;object-fit:cover;background:#eee;border-radius:5px}
+.upload-help{font-size:12px;color:#777}
 </style>
 </head>
 
@@ -117,6 +120,13 @@ footer{text-align:center;background:#14283e;color:white;padding:25px;font-size:1
 </select>
 </div>
 
+<div class="field">
+<label for="cover">Book Cover Image</label>
+<input id="cover" type="file" accept="image/*">
+<p class="upload-help">Choose a JPG, PNG or WebP image from your phone. Maximum size: 5 MB.</p>
+<img id="coverPreview" class="cover-preview" alt="Selected book cover preview">
+</div>
+
 <button class="btn" id="submitButton" type="submit">ADD BOOK TO INVENTORY</button>
 <button class="btn btn-secondary" id="cancelEdit" type="button" style="display:none">CANCEL EDIT</button>
 
@@ -145,8 +155,8 @@ Your dashboard requires author login. Keep your login details private and always
 
 const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
 
-// Replace the text below with your existing Supabase publishable key.
-const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
+// Keep your existing Supabase publishable key here.
+const SUPABASE_KEY = "PASTE_YOUR_EXISTING_PUBLISHABLE_KEY_HERE";
 
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -155,6 +165,7 @@ const stats = document.querySelector(".stats");
 const login = document.createElement("section");
 
 let editingBookId = null;
+let currentCoverUrl = null;
 
 login.className = "panel";
 login.style.cssText = "max-width:500px;margin:30px auto;";
@@ -192,6 +203,11 @@ function showDashboard(show) {
 function resetForm() {
   document.getElementById("bookForm").reset();
   editingBookId = null;
+  currentCoverUrl = null;
+
+  const preview = document.getElementById("coverPreview");
+  preview.src = "";
+  preview.style.display = "none";
 
   document.getElementById("formHeading").textContent = "Add a New Book";
   document.getElementById("submitButton").textContent = "ADD BOOK TO INVENTORY";
@@ -200,12 +216,24 @@ function resetForm() {
 
 function editBook(book) {
   editingBookId = book.id;
+  currentCoverUrl = book.cover_url || null;
 
   document.getElementById("title").value = book.title || "";
   document.getElementById("description").value = book.description || "";
   document.getElementById("price").value = book.price ?? "";
   document.getElementById("date").value = book.publication_date || "";
   document.getElementById("status").value = book.status || "Upcoming";
+  document.getElementById("cover").value = "";
+
+  const preview = document.getElementById("coverPreview");
+
+  if (currentCoverUrl) {
+    preview.src = currentCoverUrl;
+    preview.style.display = "block";
+  } else {
+    preview.src = "";
+    preview.style.display = "none";
+  }
 
   document.getElementById("formHeading").textContent = "Edit Book";
   document.getElementById("submitButton").textContent = "SAVE CHANGES";
@@ -214,6 +242,67 @@ function editBook(book) {
   document.getElementById("formHeading").scrollIntoView({
     behavior: "smooth"
   });
+}
+
+// Show a preview when an image is selected.
+document.getElementById("cover").addEventListener("change", event => {
+  const file = event.target.files[0];
+  const preview = document.getElementById("coverPreview");
+
+  if (!file) {
+    if (currentCoverUrl) {
+      preview.src = currentCoverUrl;
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    event.target.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("Your image is too large. Please choose an image under 5 MB.");
+    event.target.value = "";
+    return;
+  }
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+});
+
+// Upload an image into the author's own folder.
+async function uploadCover(file) {
+  const { data: userData, error: userError } = await client.auth.getUser();
+
+  if (userError || !userData.user) {
+    throw new Error("Please sign in again before uploading.");
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const uniqueName = Date.now() + "-" + safeName;
+  const filePath = userData.user.id + "/" + uniqueName;
+
+  const { error: uploadError } = await client.storage
+    .from("book-covers")
+    .upload(filePath, file, {
+      contentType: file.type,
+      upsert: false
+    });
+
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  const { data } = client.storage
+    .from("book-covers")
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
 }
 
 async function loadBooks() {
@@ -241,6 +330,14 @@ async function loadBooks() {
 
     const item = document.createElement("div");
     item.className = "book";
+
+    if (book.cover_url) {
+      const cover = document.createElement("img");
+      cover.className = "book-cover";
+      cover.src = book.cover_url;
+      cover.alt = book.title + " cover";
+      item.appendChild(cover);
+    }
 
     const info = document.createElement("div");
     info.className = "book-info";
@@ -274,9 +371,7 @@ async function loadBooks() {
     edit.textContent = "EDIT";
     edit.type = "button";
 
-    edit.addEventListener("click", () => {
-      editBook(book);
-    });
+    edit.addEventListener("click", () => editBook(book));
 
     const remove = document.createElement("button");
     remove.className = "btn btn-danger";
@@ -339,12 +434,16 @@ document.getElementById("loginForm").addEventListener("submit", async event => {
 document.getElementById("bookForm").addEventListener("submit", async event => {
   event.preventDefault();
 
+  const submitButton = document.getElementById("submitButton");
+  const selectedFile = document.getElementById("cover").files[0];
+
   const bookDetails = {
     title: document.getElementById("title").value.trim(),
     description: document.getElementById("description").value.trim(),
     price: Number(document.getElementById("price").value),
     publication_date: document.getElementById("date").value || null,
-    status: document.getElementById("status").value
+    status: document.getElementById("status").value,
+    cover_url: currentCoverUrl
   };
 
   if (!bookDetails.title || !bookDetails.description ||
@@ -353,30 +452,55 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
     return;
   }
 
-  let result;
-
-  if (editingBookId) {
-    result = await client
-      .from("books")
-      .update(bookDetails)
-      .eq("id", editingBookId);
-  } else {
-    result = await client
-      .from("books")
-      .insert(bookDetails);
+  if (selectedFile) {
+    if (!selectedFile.type.startsWith("image/") ||
+        selectedFile.size > 5 * 1024 * 1024) {
+      alert("Please choose a valid image under 5 MB.");
+      return;
+    }
   }
 
-  if (result.error) {
-    alert("Could not save the book. Please check your login and try again.");
-    return;
+  submitButton.disabled = true;
+  submitButton.textContent = selectedFile ? "UPLOADING COVER..." : "SAVING...";
+
+  try {
+    if (selectedFile) {
+      bookDetails.cover_url = await uploadCover(selectedFile);
+    }
+
+    let result;
+
+    if (editingBookId) {
+      result = await client
+        .from("books")
+        .update(bookDetails)
+        .eq("id", editingBookId);
+    } else {
+      result = await client
+        .from("books")
+        .insert(bookDetails);
+    }
+
+    if (result.error) throw result.error;
+
+    const wasEditing = Boolean(editingBookId);
+
+    resetForm();
+    await loadBooks();
+
+    alert(wasEditing
+      ? "Book updated successfully!"
+      : "Book added successfully!");
+
+  } catch (error) {
+    console.error(error);
+    alert("Could not save the book or upload its cover. Please check your connection and permissions, then try again.");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = editingBookId
+      ? "SAVE CHANGES"
+      : "ADD BOOK TO INVENTORY";
   }
-
-  const wasEditing = Boolean(editingBookId);
-
-  resetForm();
-  await loadBooks();
-
-  alert(wasEditing ? "Book updated successfully!" : "Book added successfully!");
 });
 
 document.getElementById("cancelEdit").addEventListener("click", resetForm);
@@ -420,6 +544,7 @@ checkLogin();
 
 </body>
 </html>
+
 
 
 
