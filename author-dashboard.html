@@ -446,10 +446,12 @@ document.getElementById("bookForm").addEventListener("submit", async event => {
   const bookDetails = {
     title: document.getElementById("title").value.trim(),
     description: document.getElementById("description").value.trim(),
+    sample_text: document.getElementById("sampleText").value.trim(),
     price: Number(document.getElementById("price").value),
     publication_date: document.getElementById("date").value || null,
     status: document.getElementById("status").value,
     cover_url: currentCoverUrl
+};
   };
 
   if (!bookDetails.title || !bookDetails.description ||
