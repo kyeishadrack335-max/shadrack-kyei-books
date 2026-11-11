@@ -83,7 +83,7 @@ main{padding:45px 18px}
 
 const SUPABASE_URL = "https://rrztpvtdgrduclzetmfg.supabase.co";
 
-// Keep your existing Supabase publishable key here.
+// Put your existing Supabase publishable key here.
 const SUPABASE_KEY = "sb_publishable_YlJ7IusjHbcKCGUYHt4HKQ_2CxJqfnh";
 
 const client = window.supabase.createClient(
@@ -93,13 +93,20 @@ const client = window.supabase.createClient(
 
 const collection = document.getElementById("bookCollection");
 
+function showPlaceholder(card, title) {
+  const placeholder = document.createElement("div");
+  placeholder.className = "placeholder";
+  placeholder.textContent = title;
+  card.prepend(placeholder);
+}
+
 async function loadBooks() {
   collection.innerHTML = '<p class="loading">Loading our publications...</p>';
 
   try {
     const { data: books, error } = await client
       .from("books")
-      .select("title,description,price,status")
+      .select("title,description,price,status,cover_url")
       .eq("status", "Published")
       .order("created_at", { ascending: false });
 
@@ -117,24 +124,21 @@ async function loadBooks() {
       const card = document.createElement("article");
       card.className = "card";
 
-      // Show the existing cover for the main book.
-      if (book.title === "WHEN BECOMING FEELS IMPOSSIBLE") {
+      // Display the cover uploaded through the author dashboard.
+      if (book.cover_url) {
         const cover = document.createElement("img");
         cover.className = "cover";
-        cover.src = "file_00000000454c81f499ffcea37a814fea.png";
-        cover.alt = "When Becoming Feels Impossible book cover";
+        cover.src = book.cover_url;
+        cover.alt = book.title + " book cover";
+
         cover.onerror = () => {
-          const placeholder = document.createElement("div");
-          placeholder.className = "placeholder";
-          placeholder.textContent = book.title;
-          cover.replaceWith(placeholder);
+          cover.remove();
+          showPlaceholder(card, book.title);
         };
+
         card.appendChild(cover);
       } else {
-        const placeholder = document.createElement("div");
-        placeholder.className = "placeholder";
-        placeholder.textContent = book.title;
-        card.appendChild(placeholder);
+        showPlaceholder(card, book.title);
       }
 
       const content = document.createElement("div");
@@ -151,7 +155,8 @@ async function loadBooks() {
       author.textContent = "By Shadrack Kyei";
 
       const description = document.createElement("p");
-      description.textContent = book.description || "A publication from SK Publications.";
+      description.textContent =
+        book.description || "A publication from SK Publications.";
 
       const price = document.createElement("p");
       price.className = "price";
@@ -167,7 +172,6 @@ async function loadBooks() {
 
       content.append(label, title, author, description, price);
 
-      // The existing detailed book page belongs to the main publication.
       if (book.title === "WHEN BECOMING FEELS IMPOSSIBLE") {
         const details = document.createElement("a");
         details.className = "btn";
@@ -182,6 +186,8 @@ async function loadBooks() {
     });
 
   } catch (error) {
+    console.error("Bookstore loading error:", error);
+
     collection.innerHTML =
       '<p class="loading">We could not load the books. Please try again later.</p>';
   }
@@ -193,4 +199,5 @@ loadBooks();
 
 </body>
 </html>
+
 
