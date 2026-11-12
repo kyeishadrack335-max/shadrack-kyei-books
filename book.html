@@ -93,7 +93,31 @@ box-shadow:0 8px 25px #00000008
 max-height:420px;
 overflow:hidden
 }
+.reading-mode{
+position:fixed;
+inset:0;
+z-index:9999;
+background:#faf9f6;
+overflow-y:auto;
+padding:35px 20px;
+}
 
+.reading-mode #sample{
+max-width:800px;
+margin:30px auto;
+padding:45px;
+font-size:21px;
+line-height:2.2;
+background:#fff;
+}
+
+.reading-mode #closeReadingMode{
+display:inline-block !important;
+}
+
+.reading-mode #toggleSample{
+display:none !important;
+}
 #toggleSample{
 display:none;
 margin-top:15px
@@ -307,7 +331,22 @@ async function loadBook() {
       sample.classList.remove("collapsed");
       toggleButton.style.display = "none";
     }
+const readingModeButton =
+  document.getElementById("readingModeButton");
 
+const closeReadingMode =
+  document.getElementById("closeReadingMode");
+
+const detailsSection =
+  document.querySelector(".details");
+
+readingModeButton.onclick = function() {
+  detailsSection.classList.add("reading-mode");
+};
+
+closeReadingMode.onclick = function() {
+  detailsSection.classList.remove("reading-mode");
+};
     const message =
       "Hello, I want to order " + book.title + ".";
 
