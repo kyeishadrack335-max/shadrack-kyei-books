@@ -994,12 +994,18 @@ if (relatedError) {
   relatedSection.style.display = "block";
 }
 
-    const message =
-      "Hello, I want to order " + book.title + ".";
+    
+const message =
+  "Hello SK Publications! I would like to order " +
+  book.title +
+  " for GH₵" +
+  Number(book.price).toFixed(2) +
+  ". Please send me the payment instructions. Thank you.";
 
-    document.getElementById("orderButton").href =
-      "https://wa.me/233508773856?text=" +
-      encodeURIComponent(message);
+document.getElementById("orderButton").href =
+  "https://wa.me/233508773856?text=" +
+  encodeURIComponent(message);
+
 
     document.title = book.title + " | SK Publications";
 
