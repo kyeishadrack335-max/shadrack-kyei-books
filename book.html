@@ -247,6 +247,244 @@ font:13px Arial,sans-serif
 main{padding:45px 20px}
 .sample{padding:22px;font-size:16px}
 }
+  
+/* BOOK PAGE DESIGN UPGRADE */
+
+header {
+  background: #101f32;
+  padding: 24px 7%;
+}
+
+header a {
+  color: #d7b779;
+  letter-spacing: 2px;
+}
+
+.hero {
+  background: linear-gradient(135deg,#101f32,#294760);
+  padding: 35px 20px;
+}
+
+.hero a {
+  color: #d7b779;
+}
+
+.book {
+  gap: 65px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px #0000000c;
+}
+
+.book img {
+  max-height: 550px;
+  object-fit: contain;
+}
+
+.book .price {
+  font-size: 28px;
+  color: #a17d45;
+}
+
+.btn {
+  transition: background .2s, transform .2s;
+}
+
+.btn:hover {
+  background: #a17d45;
+  transform: translateY(-2px);
+}
+
+.btn.gold {
+  background: #c5a15e;
+  color: #14283e;
+}
+
+.details {
+  border-top: 1px solid #e5dfd2;
+  margin-top: 65px;
+  padding-top: 40px;
+}
+
+.details > p {
+  line-height: 2;
+}
+
+/* TABLE OF CONTENTS */
+
+.contents {
+  margin: 25px 0 40px;
+}
+
+.part-heading {
+  background: #14283e;
+  color: white;
+  padding: 25px;
+  margin-top: 25px;
+  border-left: 5px solid #b18b50;
+}
+
+.part-heading span {
+  color: #d7b779;
+  font: 12px Arial,sans-serif;
+  letter-spacing: 2px;
+}
+
+.part-heading h3 {
+  margin-top: 8px;
+  font-size: 20px;
+  color: white;
+}
+
+.part-heading p {
+  color: #ddd;
+  margin-bottom: 0;
+}
+
+.chapter {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 12px;
+  border-bottom: 1px solid #e5dfd2;
+}
+
+.chapter > span {
+  color: #b18b50;
+  font: bold 18px Arial,sans-serif;
+  min-width: 30px;
+}
+
+.chapter h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #202d3d;
+}
+
+.chapter p {
+  font-size: 14px;
+  margin: 5px 0 0;
+}
+
+/* READING AND AUTHOR SECTIONS */
+
+.sample {
+  border-left-color: #b18b50;
+}
+
+.author-note {
+  box-shadow: 0 8px 25px #00000008;
+}
+
+.faq details {
+  transition: border-color .2s;
+}
+
+.faq details[open] {
+  border-color: #b18b50;
+}
+
+.contact-support {
+  background: linear-gradient(135deg,#101f32,#294760);
+  padding: 45px 25px;
+}
+
+.contact-support .label {
+  color: #d7b779;
+}
+
+.contact-support .btn.gold {
+  background: #c5a15e;
+}
+
+/* FOOTER */
+
+.site-footer {
+  background: #101f32;
+  color: white;
+  padding: 50px 7% 20px;
+  margin-top: 60px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-brand h2 {
+  color: #d7b779;
+  font-size: 23px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.footer-brand p,
+.footer-contact p {
+  color: #cbd3dc;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+
+.footer-links h3,
+.footer-contact h3 {
+  color: #d7b779;
+  font: bold 14px Arial,sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+
+.footer-links a,
+.footer-contact a {
+  display: block;
+  color: #e5eaf0;
+  text-decoration: none;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+  color: #d7b779;
+}
+
+.footer-bottom {
+  border-top: 1px solid #34465a;
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+  color: #aeb9c6;
+  font: 13px Arial,sans-serif;
+  line-height: 1.8;
+}
+
+@media(max-width:700px) {
+  .book {
+    padding: 15px;
+    gap: 30px;
+  }
+
+  .chapter {
+    gap: 12px;
+  }
+
+  .part-heading {
+    padding: 20px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .site-footer {
+    padding: 40px 25px 20px;
+  }
+}
+
 </style>
 </head>
 
