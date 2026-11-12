@@ -83,6 +83,77 @@ section{padding:65px 6%}
 .review-form{padding:22px}
 .star-button{font-size:34px}
 }
+  
+.welcome-banner {
+  background: linear-gradient(135deg, #101f32, #203b56);
+  color: white;
+  padding: 55px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+.welcome-content {
+  max-width: 580px;
+}
+
+.welcome-label {
+  color: #d7b779;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.welcome-content h1 {
+  font-size: clamp(32px, 5vw, 55px);
+  line-height: 1.15;
+  margin: 20px 0;
+}
+
+.welcome-content p {
+  color: #e0e5eb;
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 500px;
+}
+
+.welcome-button {
+  display: inline-block;
+  background: #c5a15e;
+  color: #14283e;
+  padding: 15px 22px;
+  margin-top: 18px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border-radius: 3px;
+}
+
+.welcome-book img {
+  width: 240px;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: 5px;
+  box-shadow: 0 20px 45px #0008;
+}
+
+@media (max-width: 650px) {
+  .welcome-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 45px 22px;
+  }
+
+  .welcome-book img {
+    width: 190px;
+    max-height: 280px;
+  }
+}
+
 </style>
 </head>
 
