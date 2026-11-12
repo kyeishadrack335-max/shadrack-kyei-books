@@ -636,6 +636,53 @@ readingModeButton.onclick = function() {
 closeReadingMode.onclick = function() {
   detailsSection.classList.remove("reading-mode");
 };
+    
+const relatedSection =
+  document.getElementById("relatedBooksSection");
+
+const relatedContainer =
+  document.getElementById("relatedBooks");
+
+const { data: otherBooks, error: relatedError } = await client
+  .from("books")
+  .select("id,title,price,cover_url")
+  .eq("status", "Published")
+  .neq("id", book.id)
+  .limit(3);
+
+if (relatedError) {
+  console.error("Related books error:", relatedError);
+} else if (otherBooks && otherBooks.length > 0) {
+  relatedContainer.replaceChildren();
+
+  otherBooks.forEach(function(item) {
+    const card = document.createElement("div");
+    card.className = "related-book";
+
+    if (item.cover_url) {
+      const image = document.createElement("img");
+      image.src = item.cover_url;
+      image.alt = item.title + " cover";
+      card.appendChild(image);
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const price = document.createElement("p");
+    price.textContent = "GH₵" + Number(item.price).toFixed(2);
+
+    const link = document.createElement("a");
+    link.href = "book.html?id=" + encodeURIComponent(item.id);
+    link.textContent = "VIEW BOOK";
+
+    card.append(title, price, link);
+    relatedContainer.appendChild(card);
+  });
+
+  relatedSection.style.display = "block";
+}
+
     const message =
       "Hello, I want to order " + book.title + ".";
 
