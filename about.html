@@ -17,7 +17,7 @@ line-height:1.8
 }
 
 header{
-background:#14283e;
+background:#101f32;
 padding:22px 7%;
 display:flex;
 justify-content:space-between;
@@ -40,17 +40,20 @@ font:12px Arial,sans-serif
 }
 
 .hero{
-background:#eae6dc;
+background:linear-gradient(135deg,#101f32,#294760);
+color:white;
 text-align:center;
-padding:95px 20px
+padding:100px 20px
 }
 
 .label{
-color:#a17d45;
+color:#b18b50;
 font:12px Arial,sans-serif;
 letter-spacing:3px;
 margin-bottom:18px
 }
+
+.hero .label{color:#d7b779}
 
 h1{
 font-size:clamp(38px,6vw,62px);
@@ -60,83 +63,163 @@ line-height:1.2
 .hero p{
 max-width:650px;
 margin:20px auto;
-color:#666
+color:#e0e5eb
 }
 
 main{
-max-width:1000px;
+max-width:1050px;
 margin:auto;
-padding:65px 25px
+padding:75px 25px
 }
 
-section{margin-bottom:65px}
+section{margin-bottom:75px}
 
 h2{
-font-size:32px;
-margin-bottom:18px
+font-size:clamp(27px,4vw,36px);
+margin-bottom:18px;
+color:#172a40
 }
 
 p{color:#626262;margin:15px 0}
 
 .story{
 background:white;
-padding:35px;
-border-left:4px solid #b18b50;
-box-shadow:0 8px 30px #00000008
+padding:40px;
+border-left:5px solid #b18b50;
+box-shadow:0 10px 35px #0000000c;
+border-radius:5px
+}
+
+.story p{
+line-height:2;
+margin:18px 0
 }
 
 .values{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:22px
+gap:25px;
+margin-top:30px
 }
 
 .value{
-background:#fff;
-padding:28px;
-border-radius:5px
+background:white;
+padding:32px 25px;
+border-radius:7px;
+border:1px solid #eee9df;
+box-shadow:0 8px 25px #00000008;
+transition:transform .2s
 }
+
+.value:hover{transform:translateY(-5px)}
 
 .value h3{
 color:#a17d45;
+font-size:21px;
 margin-bottom:12px
 }
 
+.value p{line-height:1.9}
+
 .author{
-background:#14283e;
+background:#101f32;
 color:white;
-padding:45px 30px;
+padding:60px 30px;
 text-align:center;
-border-radius:5px
+border-radius:8px;
+box-shadow:0 12px 35px #00000018
 }
 
+.author .label{color:#d7b779}
+
 .author h2{color:#d7b779}
-.author p{color:#e0e0e0;max-width:650px;margin:15px auto}
+
+.author p{
+color:#e0e5eb;
+max-width:680px;
+margin:18px auto;
+line-height:2
+}
 
 .btn{
 display:inline-block;
-background:#b18b50;
-color:white;
+background:#c5a15e;
+color:#14283e;
 text-decoration:none;
-padding:14px 25px;
-font:12px Arial,sans-serif;
+padding:15px 26px;
+font:bold 12px Arial,sans-serif;
 letter-spacing:1px;
-margin-top:18px;
-border-radius:3px
+margin-top:22px;
+border-radius:3px;
+transition:background .2s
 }
 
-footer{
-background:#14283e;
+.btn:hover{background:#e0c58c}
+
+.site-footer{
+background:#101f32;
 color:white;
-text-align:center;
-padding:30px;
-font:13px Arial,sans-serif
+padding:50px 7% 20px
 }
 
-@media(max-width:550px){
-main{padding:45px 18px}
-.hero{padding:70px 18px}
+.footer-content{
+display:grid;
+grid-template-columns:2fr 1fr 1fr;
+gap:40px;
+max-width:1100px;
+margin:auto
+}
+
+.footer-brand h2{
+color:#d7b779;
+font-size:23px;
+letter-spacing:2px
+}
+
+.footer-brand p,.footer-contact p{
+color:#cbd3dc;
+line-height:1.8;
+margin-top:10px
+}
+
+.footer-links h3,.footer-contact h3{
+color:#d7b779;
+font: bold 14px Arial,sans-serif;
+letter-spacing:1px;
+margin-bottom:18px
+}
+
+.footer-links a,.footer-contact a{
+display:block;
+color:#e5eaf0;
+text-decoration:none;
+margin:12px 0;
+font-size:14px
+}
+
+.footer-links a:hover,.footer-contact a:hover{
+color:#d7b779
+}
+
+.footer-bottom{
+border-top:1px solid #34465a;
+margin-top:40px;
+padding-top:20px;
+text-align:center;
+color:#aeb9c6;
+font:13px Arial,sans-serif;
+line-height:1.8
+}
+
+@media(max-width:650px){
+main{padding:50px 18px}
+.hero{padding:75px 20px}
 .story{padding:25px}
+.footer-content{
+grid-template-columns:1fr;
+gap:25px
+}
+.site-footer{padding:40px 25px 20px}
 }
 </style>
 </head>
@@ -241,9 +324,41 @@ and appreciate who they are becoming.
 
 </main>
 
-<footer>
-© 2026 SK Publications · Shadrack Kyei
+<footer class="site-footer">
+<div class="footer-content">
+
+<div class="footer-brand">
+<h2>SK PUBLICATIONS</h2>
+<p>Stories that inspire. Words that stay.</p>
+<p>Discover books that encourage growth,
+reflection and transformation.</p>
+</div>
+
+<div class="footer-links">
+<h3>QUICK LINKS</h3>
+<a href="index.html">Home</a>
+<a href="books.html">Our Books</a>
+<a href="about.html">About the Author</a>
+<a href="book.html">Featured Book</a>
+</div>
+
+<div class="footer-contact">
+<h3>GET IN TOUCH</h3>
+<p>Questions about our books or orders?</p>
+<a href="https://wa.me/233508773856"
+target="_blank" rel="noopener">
+Contact Us on WhatsApp
+</a>
+</div>
+
+</div>
+
+<div class="footer-bottom">
+<p>© 2026 SK Publications. All rights reserved.</p>
+<p>Founded by Shadrack Kyei.</p>
+</div>
 </footer>
 
 </body>
 </html>
+
