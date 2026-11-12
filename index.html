@@ -351,7 +351,7 @@ document.getElementById("reviewForm").addEventListener("submit", async function(
 
   } catch (error) {
     console.error("Review submission error:", error);
-    message.textContent = "Sorry, your review could not be submitted. Please try again.";
+    message.textContent = "Error: " + (error.message || "Unknown error");
     message.style.color = "#b3261e";
   } finally {
     button.disabled = false;
