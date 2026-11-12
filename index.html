@@ -337,7 +337,36 @@ async function loadApprovedReviews() {
 
     if (error) throw error;
 
-    container.replaceChildren();
+// Calculate average rating
+const ratingBox = document.getElementById("averageRating");
+
+const ratedReviews = (data || []).filter(review => {
+  const value = Number(review.rating);
+  return Number.isInteger(value) && value >= 1 && value <= 5;
+});
+
+ratingBox.replaceChildren();
+
+if (ratedReviews.length > 0) {
+  const average = ratedReviews.reduce(
+    (total, review) => total + Number(review.rating), 0
+  ) / ratedReviews.length;
+
+  const stars = document.createElement("div");
+  stars.className = "display-stars";
+  stars.textContent = "★".repeat(Math.round(average)) +
+                      "☆".repeat(5 - Math.round(average));
+
+  const score = document.createElement("p");
+  score.textContent = average.toFixed(1) + " / 5 · Based on " +
+                      ratedReviews.length + " reader reviews";
+
+  ratingBox.append(stars, score);
+} else {
+  ratingBox.textContent = "No ratings yet.";
+}
+
+container.replaceChildren();
 
     if (!data || data.length === 0) {
       const empty = document.createElement("p");
