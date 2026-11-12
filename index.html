@@ -42,14 +42,18 @@ h2{font-size:clamp(29px,4vw,42px);line-height:1.25;margin-bottom:20px}
 .about p{max-width:800px;color:#e0e4e9;margin:15px 0}
 
 .reviews{background:#eae6dc;text-align:center}
-.review-card{background:white;padding:35px;max-width:650px;margin:30px auto;border-radius:8px}
-.review-card p{color:#666;margin:15px 0}
-
 .review-form{max-width:650px;margin:35px auto;background:white;padding:30px;border-radius:8px;text-align:left}
 .review-form label{display:block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;margin:15px 0 6px}
 .review-form input,.review-form textarea{width:100%;padding:13px;border:1px solid #d6d6d6;border-radius:4px;font:15px Arial,sans-serif;background:#fff}
 .review-form textarea{min-height:140px;resize:vertical}
 .review-form input:focus,.review-form textarea:focus{outline:2px solid #b18b50;border-color:#b18b50}
+
+.star-picker{display:flex;gap:8px;margin:10px 0;align-items:center}
+.star-button{background:none;border:0;cursor:pointer;font-size:37px;color:#c9c9c9;padding:0 3px;line-height:1}
+.star-button.selected,.star-button.preview{color:#d5a52e}
+.star-button:focus-visible{outline:2px solid #172a40;outline-offset:4px;border-radius:4px}
+.rating-hint{font:13px Arial,sans-serif;color:#777;margin:5px 0 15px}
+
 .review-note{font:12px Arial,sans-serif;color:#777;margin-top:12px}
 #reviewMessage{margin-top:15px;font:14px Arial,sans-serif}
 .reader-reviews{max-width:800px;margin:45px auto 0;text-align:left}
@@ -57,6 +61,7 @@ h2{font-size:clamp(29px,4vw,42px);line-height:1.25;margin-bottom:20px}
 .reader-review h3{font-size:17px;color:#172a40}
 .reader-review .review-date{font:11px Arial,sans-serif;color:#999;margin:4px 0 12px}
 .reader-review p{color:#555;white-space:pre-wrap}
+.display-stars{color:#d5a52e;font-size:23px;letter-spacing:3px;margin:5px 0}
 .no-reviews{color:#666;text-align:center;padding:20px}
 
 .updates{text-align:center}
@@ -76,6 +81,7 @@ nav a{display:inline-block;margin:6px}
 section{padding:65px 6%}
 .hero{padding:85px 6%}
 .review-form{padding:22px}
+.star-button{font-size:34px}
 }
 </style>
 </head>
@@ -151,6 +157,18 @@ section{padding:65px 6%}
 <p>Have you read <em>When Becoming Feels Impossible</em>? Tell us what you think.</p>
 
 <form id="reviewForm">
+<label>Your Rating</label>
+
+<div class="star-picker" id="starPicker" role="group" aria-label="Choose a rating from one to five stars">
+<button class="star-button" type="button" data-rating="1" aria-label="1 star" aria-pressed="false">★</button>
+<button class="star-button" type="button" data-rating="2" aria-label="2 stars" aria-pressed="false">★</button>
+<button class="star-button" type="button" data-rating="3" aria-label="3 stars" aria-pressed="false">★</button>
+<button class="star-button" type="button" data-rating="4" aria-label="4 stars" aria-pressed="false">★</button>
+<button class="star-button" type="button" data-rating="5" aria-label="5 stars" aria-pressed="false">★</button>
+</div>
+
+<p class="rating-hint" id="ratingHint" aria-live="polite">Tap a star to rate the book.</p>
+
 <label for="readerName">Your Name</label>
 <input id="readerName" type="text" maxlength="80" placeholder="Enter your name" required>
 
@@ -211,6 +229,49 @@ const client = window.supabase.createClient(
   SUPABASE_KEY
 );
 
+let selectedRating = 0;
+
+const starButtons = document.querySelectorAll(".star-button");
+const ratingHint = document.getElementById("ratingHint");
+
+function showRating(rating) {
+  starButtons.forEach(button => {
+    const value = Number(button.dataset.rating);
+    button.classList.toggle("selected", value <= rating);
+    button.setAttribute("aria-pressed", value === selectedRating ? "true" : "false");
+  });
+
+  const labels = [
+    "",
+    "1 star - Poor",
+    "2 stars - Fair",
+    "3 stars - Good",
+    "4 stars - Very good",
+    "5 stars - Excellent"
+  ];
+
+  ratingHint.textContent = labels[rating] || "Tap a star to rate the book.";
+}
+
+starButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    selectedRating = Number(button.dataset.rating);
+    showRating(selectedRating);
+  });
+
+  button.addEventListener("mouseenter", () => {
+    const rating = Number(button.dataset.rating);
+
+    starButtons.forEach(star => {
+      star.classList.toggle("preview", Number(star.dataset.rating) <= rating);
+    });
+  });
+
+  button.addEventListener("mouseleave", () => {
+    starButtons.forEach(star => star.classList.remove("preview"));
+  });
+});
+
 async function loadFeaturedBook() {
   try {
     const { data: book, error } = await client
@@ -267,7 +328,7 @@ async function loadApprovedReviews() {
   try {
     const { data, error } = await client
       .from("reviews")
-      .select("reader_name,review_text,created_at")
+      .select("reader_name,review_text,created_at,rating")
       .eq("approved", true)
       .order("created_at", { ascending: false });
 
@@ -290,6 +351,14 @@ async function loadApprovedReviews() {
       const name = document.createElement("h3");
       name.textContent = review.reader_name;
 
+      const stars = document.createElement("div");
+      stars.className = "display-stars";
+
+      const rating = Number(review.rating);
+      stars.textContent = Number.isInteger(rating) && rating >= 1 && rating <= 5
+        ? "★".repeat(rating) + "☆".repeat(5 - rating)
+        : "Rating not provided";
+
       const date = document.createElement("div");
       date.className = "review-date";
       date.textContent = review.created_at
@@ -299,7 +368,7 @@ async function loadApprovedReviews() {
       const message = document.createElement("p");
       message.textContent = review.review_text;
 
-      card.append(name, date, message);
+      card.append(name, stars, date, message);
       container.appendChild(card);
     });
 
@@ -320,12 +389,20 @@ document.getElementById("reviewForm").addEventListener("submit", async function(
   const readerName = nameInput.value.trim();
   const reviewText = reviewInput.value.trim();
 
+  if (selectedRating < 1 || selectedRating > 5) {
+    message.style.color = "#b3261e";
+    message.textContent = "Please select a star rating before submitting.";
+    return;
+  }
+
   if (readerName.length < 1 || readerName.length > 80) {
+    message.style.color = "#b3261e";
     message.textContent = "Please enter a name between 1 and 80 characters.";
     return;
   }
 
   if (reviewText.length < 10 || reviewText.length > 2000) {
+    message.style.color = "#b3261e";
     message.textContent = "Your review must be between 10 and 2000 characters.";
     return;
   }
@@ -340,19 +417,23 @@ document.getElementById("reviewForm").addEventListener("submit", async function(
       .insert([{
         reader_name: readerName,
         review_text: reviewText,
+        rating: selectedRating,
         approved: false
       }]);
 
     if (error) throw error;
 
-    message.textContent = "Thank you! Your review has been submitted for approval.";
     message.style.color = "#287a45";
+    message.textContent = "Thank you! Your review and star rating have been submitted for approval.";
+
     this.reset();
+    selectedRating = 0;
+    showRating(0);
 
   } catch (error) {
     console.error("Review submission error:", error);
-    message.textContent = "Error: " + (error.message || "Unknown error");
     message.style.color = "#b3261e";
+    message.textContent = "Error: " + (error.message || "Unknown error");
   } finally {
     button.disabled = false;
     button.textContent = "SUBMIT REVIEW";
@@ -365,5 +446,6 @@ loadApprovedReviews();
 
 </body>
 </html>
+
 
 
