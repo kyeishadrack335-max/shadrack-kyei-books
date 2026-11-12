@@ -62,7 +62,9 @@ padding:14px 23px;
 font:12px Arial,sans-serif;
 letter-spacing:1px;
 margin:12px 5px 12px 0;
-border-radius:3px
+border-radius:3px;
+border:none;
+cursor:pointer
 }
 
 .btn.gold{background:#b18b50}
@@ -73,7 +75,7 @@ margin-top:55px;
 padding-top:30px
 }
 
-  .sample{
+.sample{
 background:#fff;
 padding:35px;
 border:1px solid #e5dfd2;
@@ -84,8 +86,18 @@ white-space:pre-wrap;
 color:#444;
 line-height:2.1;
 font-size:17px;
-box-shadow:0 8px 25px #00000008;
-  }
+box-shadow:0 8px 25px #00000008
+}
+
+.sample.collapsed{
+max-height:420px;
+overflow:hidden
+}
+
+#toggleSample{
+display:none;
+margin-top:15px
+}
 
 .message{
 text-align:center;
@@ -104,6 +116,7 @@ font:13px Arial,sans-serif
 @media(max-width:700px){
 .book{grid-template-columns:1fr;text-align:center}
 main{padding:45px 20px}
+.sample{padding:22px;font-size:16px}
 }
 </style>
 </head>
@@ -175,6 +188,10 @@ the life they are already living.
 <div id="sample" class="sample">
 No reading sample has been added yet.
 </div>
+
+<button id="toggleSample" class="btn" type="button">
+READ MORE
+</button>
 
 <h2>About the Author</h2>
 
@@ -258,10 +275,32 @@ async function loadBook() {
       cover.style.display = "none";
     }
 
-    document.getElementById("sample").textContent =
+    const sample = document.getElementById("sample");
+    const toggleButton = document.getElementById("toggleSample");
+
+    const sampleText =
       book.sample_text && book.sample_text.trim()
         ? book.sample_text
         : "A reading sample will be available soon.";
+
+    sample.textContent = sampleText;
+
+    if (sampleText.length > 900) {
+      sample.classList.add("collapsed");
+      toggleButton.style.display = "inline-block";
+      toggleButton.textContent = "READ MORE";
+
+      toggleButton.onclick = function() {
+        const collapsed = sample.classList.toggle("collapsed");
+
+        toggleButton.textContent = collapsed
+          ? "READ MORE"
+          : "SHOW LESS";
+      };
+    } else {
+      sample.classList.remove("collapsed");
+      toggleButton.style.display = "none";
+    }
 
     const message =
       "Hello, I want to order " + book.title + ".";
@@ -287,5 +326,6 @@ loadBook();
 
 </body>
 </html>
+
 
 
