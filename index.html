@@ -23,7 +23,7 @@ nav a:hover{color:#d7b779}
 .hero h1{font-size:clamp(40px,7vw,75px);line-height:1.12;max-width:850px;margin:auto;color:#172a40}
 .hero p{max-width:620px;margin:25px auto;color:#626262}
 
-.btn{display:inline-block;background:#172a40;color:white;padding:14px 25px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1px;margin:8px 5px;border-radius:3px}
+.btn{display:inline-block;background:#172a40;color:white;padding:14px 25px;text-decoration:none;font:12px Arial,sans-serif;letter-spacing:1px;margin:8px 5px;border-radius:3px;border:0;cursor:pointer}
 .btn:hover{background:#a17d45}
 .btn.gold{background:#b18b50}
 
@@ -45,6 +45,20 @@ h2{font-size:clamp(29px,4vw,42px);line-height:1.25;margin-bottom:20px}
 .review-card{background:white;padding:35px;max-width:650px;margin:30px auto;border-radius:8px}
 .review-card p{color:#666;margin:15px 0}
 
+.review-form{max-width:650px;margin:35px auto;background:white;padding:30px;border-radius:8px;text-align:left}
+.review-form label{display:block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;margin:15px 0 6px}
+.review-form input,.review-form textarea{width:100%;padding:13px;border:1px solid #d6d6d6;border-radius:4px;font:15px Arial,sans-serif;background:#fff}
+.review-form textarea{min-height:140px;resize:vertical}
+.review-form input:focus,.review-form textarea:focus{outline:2px solid #b18b50;border-color:#b18b50}
+.review-note{font:12px Arial,sans-serif;color:#777;margin-top:12px}
+#reviewMessage{margin-top:15px;font:14px Arial,sans-serif}
+.reader-reviews{max-width:800px;margin:45px auto 0;text-align:left}
+.reader-review{background:white;padding:25px;margin:18px 0;border-radius:7px;overflow-wrap:anywhere}
+.reader-review h3{font-size:17px;color:#172a40}
+.reader-review .review-date{font:11px Arial,sans-serif;color:#999;margin:4px 0 12px}
+.reader-review p{color:#555;white-space:pre-wrap}
+.no-reviews{color:#666;text-align:center;padding:20px}
+
 .updates{text-align:center}
 .updates p{max-width:600px;margin:15px auto;color:#666}
 
@@ -61,6 +75,7 @@ nav a{display:inline-block;margin:6px}
 .featured{grid-template-columns:1fr;text-align:center;gap:35px}
 section{padding:65px 6%}
 .hero{padding:85px 6%}
+.review-form{padding:22px}
 }
 </style>
 </head>
@@ -97,7 +112,6 @@ section{padding:65px 6%}
 <h2>Featured Publication</h2>
 
 <div class="featured">
-
 <div class="book-image">
 <img id="featuredCover" src="" alt="Book cover" style="display:none">
 <p id="coverLoading" class="loading">Loading book cover...</p>
@@ -106,20 +120,11 @@ section{padding:65px 6%}
 <div class="book-info">
 <div class="section-label">A BOOK BY SHADRACK KYEI</div>
 <h2 id="featuredTitle">WHEN BECOMING FEELS IMPOSSIBLE</h2>
-<p class="price" id="featuredPrice">GH₵30.00</p>
-
-<p id="featuredDescription">
-A thoughtful exploration of growth, transformation, and the challenge of becoming.
-</p>
-
+<p class="price" id="featuredPrice">GH₵120.00</p>
+<p id="featuredDescription">A thoughtful exploration of growth, transformation, and the challenge of becoming.</p>
 <a class="btn" id="discoverButton" href="book.html">DISCOVER THE BOOK</a>
-
-<a class="btn gold" id="orderButton"
-href="https://wa.me/233508773856">
-ORDER / ENQUIRE
-</a>
+<a class="btn gold" id="orderButton" href="https://wa.me/233508773856">ORDER / ENQUIRE</a>
 </div>
-
 </div>
 </div>
 </section>
@@ -128,13 +133,9 @@ ORDER / ENQUIRE
 <div class="container">
 <div class="section-label">MEET THE AUTHOR</div>
 <h2>Shadrack Kyei</h2>
-
 <p>Shadrack Kyei is an emerging author whose writing explores personal growth, transformation, self-discovery, and the experiences that shape human life.</p>
-
 <p>Through thoughtful reflections and meaningful storytelling, he hopes to encourage readers to approach life with patience, embrace their journey, and appreciate who they are becoming.</p>
-
 <p>His book, <em>When Becoming Feels Impossible</em>, reflects his belief that growth is not always about becoming someone different, but also about learning to value the life one is already living.</p>
-
 <a class="btn gold" href="about.html">DISCOVER OUR STORY</a>
 </div>
 </section>
@@ -145,11 +146,32 @@ ORDER / ENQUIRE
 <h2>Every Reader Has a Story</h2>
 <p>Books can leave different impressions on different people. We welcome genuine thoughts and experiences from our readers.</p>
 
-<div class="review-card">
-<h3>Have You Read Our Book?</h3>
-<p>We would love to hear what you thought about <em>When Becoming Feels Impossible</em>.</p>
-<a class="btn" href="https://wa.me/233508773856?text=Hello%2C%20I%20would%20like%20to%20share%20my%20book%20review.">SHARE YOUR REVIEW</a>
+<div class="review-form">
+<h3>Share Your Experience</h3>
+<p>Have you read <em>When Becoming Feels Impossible</em>? Tell us what you think.</p>
+
+<form id="reviewForm">
+<label for="readerName">Your Name</label>
+<input id="readerName" type="text" maxlength="80" placeholder="Enter your name" required>
+
+<label for="reviewText">Your Review</label>
+<textarea id="reviewText" maxlength="2000" minlength="10" placeholder="Share your thoughts about the book..." required></textarea>
+
+<button class="btn" id="submitReview" type="submit">SUBMIT REVIEW</button>
+
+<p class="review-note">Your review will be checked by SK Publications before it appears publicly.</p>
+<p id="reviewMessage" role="status" aria-live="polite"></p>
+</form>
 </div>
+
+<div class="reader-reviews">
+<div class="section-label">WHAT READERS ARE SAYING</div>
+<h2>Published Reviews</h2>
+<div id="approvedReviews">
+<p class="no-reviews">Loading reader reviews...</p>
+</div>
+</div>
+
 </div>
 </section>
 
@@ -199,14 +221,11 @@ async function loadFeaturedBook() {
       .maybeSingle();
 
     if (error) throw error;
-
     if (!book) return;
 
     document.getElementById("featuredTitle").textContent = book.title;
-
     document.getElementById("featuredPrice").textContent =
       "GH₵" + Number(book.price).toFixed(2);
-
     document.getElementById("featuredDescription").textContent =
       book.description || "Discover this publication from SK Publications.";
 
@@ -221,8 +240,6 @@ async function loadFeaturedBook() {
     const coverLoading = document.getElementById("coverLoading");
 
     if (book.cover_url) {
-      cover.src = book.cover_url;
-
       cover.onload = () => {
         cover.style.display = "inline-block";
         coverLoading.style.display = "none";
@@ -231,6 +248,8 @@ async function loadFeaturedBook() {
       cover.onerror = () => {
         coverLoading.textContent = "Book cover currently unavailable.";
       };
+
+      cover.src = book.cover_url;
     } else {
       coverLoading.textContent = "Book cover coming soon.";
     }
@@ -242,9 +261,109 @@ async function loadFeaturedBook() {
   }
 }
 
+async function loadApprovedReviews() {
+  const container = document.getElementById("approvedReviews");
+
+  try {
+    const { data, error } = await client
+      .from("reviews")
+      .select("reader_name,review_text,created_at")
+      .eq("approved", true)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    container.replaceChildren();
+
+    if (!data || data.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "no-reviews";
+      empty.textContent = "No published reviews yet. Be the first to share your experience!";
+      container.appendChild(empty);
+      return;
+    }
+
+    data.forEach(review => {
+      const card = document.createElement("div");
+      card.className = "reader-review";
+
+      const name = document.createElement("h3");
+      name.textContent = review.reader_name;
+
+      const date = document.createElement("div");
+      date.className = "review-date";
+      date.textContent = review.created_at
+        ? new Date(review.created_at).toLocaleDateString()
+        : "";
+
+      const message = document.createElement("p");
+      message.textContent = review.review_text;
+
+      card.append(name, date, message);
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Reviews loading error:", error);
+    container.textContent = "Reader reviews are temporarily unavailable.";
+  }
+}
+
+document.getElementById("reviewForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const nameInput = document.getElementById("readerName");
+  const reviewInput = document.getElementById("reviewText");
+  const message = document.getElementById("reviewMessage");
+  const button = document.getElementById("submitReview");
+
+  const readerName = nameInput.value.trim();
+  const reviewText = reviewInput.value.trim();
+
+  if (readerName.length < 1 || readerName.length > 80) {
+    message.textContent = "Please enter a name between 1 and 80 characters.";
+    return;
+  }
+
+  if (reviewText.length < 10 || reviewText.length > 2000) {
+    message.textContent = "Your review must be between 10 and 2000 characters.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "SUBMITTING...";
+  message.textContent = "";
+
+  try {
+    const { error } = await client
+      .from("reviews")
+      .insert([{
+        reader_name: readerName,
+        review_text: reviewText,
+        approved: false
+      }]);
+
+    if (error) throw error;
+
+    message.textContent = "Thank you! Your review has been submitted for approval.";
+    message.style.color = "#287a45";
+    this.reset();
+
+  } catch (error) {
+    console.error("Review submission error:", error);
+    message.textContent = "Sorry, your review could not be submitted. Please try again.";
+    message.style.color = "#b3261e";
+  } finally {
+    button.disabled = false;
+    button.textContent = "SUBMIT REVIEW";
+  }
+});
+
 loadFeaturedBook();
+loadApprovedReviews();
 </script>
 
 </body>
 </html>
+
 
